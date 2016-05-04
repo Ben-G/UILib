@@ -12,7 +12,11 @@ struct TableViewSectionModel {
 
     let cells: [TableViewCellModel]
 
-    let sectionHeaderTitle: String?
-    let sectionFooterTitle: String?
+    let sectionHeaderTitle: String? = nil
+    let sectionFooterTitle: String? = nil
+
+    init(cells: [TableViewCellModel]) {
+        self.cells = cells
+    }
 
 }

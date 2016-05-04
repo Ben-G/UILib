@@ -8,14 +8,43 @@
 
 import UIKit
 
-public final class TableViewRenderer: UIView {
+protocol Renderer {
+    var view: UIView { get }
+}
 
-    var tableViewModel: TableViewModel
+struct CellTypeDefinition {
+    let nibFilename: String
+    let cellIdentifier: String
+}
 
-    init(tableViewModel: TableViewModel) {
+public final class TableViewRenderer: UIView, Renderer {
+
+    var view: UIView { return self }
+
+    let tableViewModel: TableViewModel
+    let cellTypes: [CellTypeDefinition]
+
+    let tableView: UITableView
+
+    init(tableViewModel: TableViewModel, cellTypes: [CellTypeDefinition]) {
         self.tableViewModel = tableViewModel
+        self.cellTypes = cellTypes
+
+        self.tableView = UITableView(frame: CGRect.zero)
 
         super.init(frame: CGRect.zero)
+
+        self.tableView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+
+        for cellType in cellTypes {
+            let nibFile = UINib(nibName: cellType.cellIdentifier, bundle: nil)
+            self.tableView.registerNib(nibFile, forCellReuseIdentifier: cellType.cellIdentifier)
+        }
+
+        self.addSubview(self.tableView)
+
+        self.tableView.dataSource = self
+        self.tableView.delegate = self
     }
     
     required public init?(coder aDecoder: NSCoder) {

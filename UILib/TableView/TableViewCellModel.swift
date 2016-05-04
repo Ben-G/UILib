@@ -10,9 +10,12 @@ import UIKit
 
 struct TableViewCellModel {
     let cellIdentifier: String
-    let canEdit: Bool
+    let canEdit: Bool = false
 
-    func applyViewModelToCell(cell: UITableViewCell) {
-        // TODO
+    var applyViewModelToCell: (UITableViewCell) -> Void
+
+    init(cellIdentifier: String, applyViewModelToCell: (UITableViewCell) -> Void) {
+        self.cellIdentifier = cellIdentifier
+        self.applyViewModelToCell = applyViewModelToCell
     }
 }
