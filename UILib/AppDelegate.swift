@@ -8,6 +8,8 @@
 
 import UIKit
 
+var userViewModel: UserViewComponent?
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -21,17 +23,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             cellIdentifier: "UserCell"
         )]
 
-
-        let userViewModel = userView([
+        let initialState = [
             "OK",
             "Benji",
             "Another User"
-        ])
+        ]
 
         let renderer = TableViewRenderer(
-            tableViewModel: userViewModel,
             cellTypes: cellTypes
         )
+
+        userViewModel = UserViewComponent(renderer: renderer, state: initialState)
 
         let viewController = FullScreenViewController(view: renderer)
         viewController.view.frame = UIScreen.mainScreen().bounds
@@ -43,4 +45,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
+}
+
+final class UserViewComponent: UserViewActionHandlerType {
+
+    let renderer: TableViewRenderer
+    private (set) var state: [String]
+
+    init(renderer: TableViewRenderer, state: [String]) {
+        self.renderer = renderer
+        self.state = state
+
+        renderer.tableViewModel = userView(state, actionHandler: self)
+    }
+
+    func deleteUser() {
+        self.state.removeLast()
+        renderer.tableViewModel = userView(state, actionHandler: self)
+    }
 }

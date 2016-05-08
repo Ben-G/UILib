@@ -8,14 +8,22 @@
 
 import UIKit
 
+typealias CommitEditingClosure = () -> Void
+
 struct TableViewCellModel {
     let cellIdentifier: String
-    let canEdit: Bool = false
+    let canEdit: Bool
+    let commitEditingClosure: CommitEditingClosure
+    let applyViewModelToCell: (UITableViewCell) -> Void
 
-    var applyViewModelToCell: (UITableViewCell) -> Void
-
-    init(cellIdentifier: String, applyViewModelToCell: (UITableViewCell) -> Void) {
+    init(
+        cellIdentifier: String,
+        applyViewModelToCell: (UITableViewCell) -> Void,
+        commitEditingClosure: CommitEditingClosure
+    ) {
         self.cellIdentifier = cellIdentifier
         self.applyViewModelToCell = applyViewModelToCell
+        self.commitEditingClosure = commitEditingClosure
+        self.canEdit = true
     }
 }

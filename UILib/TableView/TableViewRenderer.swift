@@ -21,13 +21,17 @@ public final class TableViewRenderer: UIView, Renderer {
 
     var view: UIView { return self }
 
-    let tableViewModel: TableViewModel
+    var tableViewModel: TableViewModel! = nil {
+        didSet {
+            self.tableView.reloadData()
+        }
+    }
+
     let cellTypes: [CellTypeDefinition]
 
     let tableView: UITableView
 
-    init(tableViewModel: TableViewModel, cellTypes: [CellTypeDefinition]) {
-        self.tableViewModel = tableViewModel
+    init(cellTypes: [CellTypeDefinition]) {
         self.cellTypes = cellTypes
 
         self.tableView = UITableView(frame: CGRect.zero)
@@ -53,7 +57,7 @@ public final class TableViewRenderer: UIView, Renderer {
 
 }
 
-extension TableViewRenderer: UITableViewDataSource {
+extension TableViewRenderer: UITableViewDataSource, UITableViewDelegate {
 
     public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return self.tableViewModel.sections.count
@@ -83,19 +87,12 @@ extension TableViewRenderer: UITableViewDataSource {
         return self.tableViewModel[indexPath].canEdit
     }
 
+    public func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        self.tableViewModel[indexPath].commitEditingClosure()
+    }
+
 }
 
-extension TableViewRenderer: UITableViewDelegate {
-
-}
-
-//
-//// Editing
-//
-//// Individual rows can opt out of having the -editing property set for them. If not implemented, all rows are assumed to be editable.
-//@available(iOS 2.0, *)
-//optional public func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool
-//
 //// Moving/reordering
 //
 //// Allows the reorder accessory view to optionally be shown for a particular row. By default, the reorder control will be shown only if the datasource implements -tableView:moveRowAtIndexPath:toIndexPath:
@@ -114,7 +111,7 @@ extension TableViewRenderer: UITableViewDelegate {
 //// After a row has the minus or plus button invoked (based on the UITableViewCellEditingStyle for the cell), the dataSource must commit the change
 //// Not called for edit actions using UITableViewRowAction - the action's handler will be invoked instead
 //@available(iOS 2.0, *)
-//optional public func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath)
+//optional
 //
 //// Data manipulation - reorder / moving support
 //

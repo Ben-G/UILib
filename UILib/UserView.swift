@@ -6,23 +6,41 @@
 //  Copyright © 2016 Benjamin Encz. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
-func userView(users: [String]) -> TableViewModel {
+protocol UserViewActionHandlerType {
+    func deleteUser()
+}
+
+func userView(users: [String], actionHandler: UserViewActionHandlerType) -> TableViewModel {
     return TableViewModel(
         sections: [
             TableViewSectionModel(
-                cells: users.map(cellModelForUser)
+                cells: users.map(cellModelForUser(actionHandler))
             )
         ]
     )
 }
 
-func cellModelForUser(user: String) -> TableViewCellModel {
-    return TableViewCellModel(
-        cellIdentifier: "UserCell"
-    ) { cell in
-        guard let cell = cell as? UserCell else { return }
-        cell.nameLabel.text = user
+func cellModelForUser(actionHandler: UserViewActionHandlerType) -> (user: String) -> TableViewCellModel {
+
+    return { user in
+
+        func applyViewModelToCell(cell: UITableViewCell) {
+            guard let cell = cell as? UserCell else { return }
+            cell.nameLabel.text = user
+        }
+
+        func commitEditingClosure() {
+            actionHandler.deleteUser()
+        }
+
+        return TableViewCellModel(
+            cellIdentifier: "UserCell",
+            applyViewModelToCell: applyViewModelToCell,
+            commitEditingClosure: commitEditingClosure
+        )
+
     }
+
 }
