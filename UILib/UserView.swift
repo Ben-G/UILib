@@ -9,7 +9,7 @@
 import UIKit
 
 protocol UserViewActionHandlerType {
-    func deleteUser()
+    func deleteUser(indexPath: NSIndexPath)
 }
 
 func userView(users: [String], actionHandler: UserViewActionHandlerType) -> TableViewModel {
@@ -31,8 +31,8 @@ func cellModelForUser(actionHandler: UserViewActionHandlerType) -> (user: String
             cell.nameLabel.text = user
         }
 
-        func commitEditingClosure() {
-            actionHandler.deleteUser()
+        func commitEditingClosure(indexPath: NSIndexPath) {
+            actionHandler.deleteUser(indexPath)
         }
 
         return TableViewCellModel(

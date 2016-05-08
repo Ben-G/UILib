@@ -8,6 +8,10 @@
 
 import UIKit
 
+enum Changeset {
+    case Delete(NSIndexPath)
+}
+
 protocol Renderer {
     var view: UIView { get }
 }
@@ -21,11 +25,15 @@ public final class TableViewRenderer: UIView, Renderer {
 
     var view: UIView { return self }
 
-    var tableViewModel: TableViewModel! = nil {
+    var tableViewModel: TableViewModel? = nil {
         didSet {
+            self._tableViewModel = tableViewModel!
+            self.tableView.setEditing(tableViewModel?.editingMode ?? false, animated: true)
             self.tableView.reloadData()
         }
     }
+
+    private var _tableViewModel: TableViewModel!
 
     let cellTypes: [CellTypeDefinition]
 
@@ -55,16 +63,25 @@ public final class TableViewRenderer: UIView, Renderer {
         fatalError("init(coder:) has not been implemented")
     }
 
+    func newViewModelWithChangeset(newViewModel: TableViewModel, changeSet: Changeset) {
+        self._tableViewModel = newViewModel
+
+        switch changeSet {
+        case let .Delete(indexPath):
+            self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+        }
+    }
+
 }
 
 extension TableViewRenderer: UITableViewDataSource, UITableViewDelegate {
 
     public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return self.tableViewModel.sections.count
+        return self._tableViewModel.sections.count
     }
 
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cellViewModel = self.tableViewModel[indexPath]
+        let cellViewModel = self._tableViewModel[indexPath]
         let cell = tableView.dequeueReusableCellWithIdentifier(cellViewModel.cellIdentifier) ?? UITableViewCell()
         cellViewModel.applyViewModelToCell(cell)
 
@@ -72,36 +89,35 @@ extension TableViewRenderer: UITableViewDataSource, UITableViewDelegate {
     }
 
     public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.tableViewModel.sections[section].cells.count
+        return self._tableViewModel.sections[section].cells.count
     }
 
     public func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return self.tableViewModel.sections[section].sectionHeaderTitle
+        return self._tableViewModel.sections[section].sectionHeaderTitle
     }
 
     public func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return self.tableViewModel.sections[section].sectionFooterTitle
+        return self._tableViewModel.sections[section].sectionFooterTitle
     }
 
     public func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return self.tableViewModel[indexPath].canEdit
+        return self._tableViewModel[indexPath].canEdit
     }
 
     public func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        self.tableViewModel[indexPath].commitEditingClosure()
+        self._tableViewModel[indexPath].commitEditingClosure(indexPath)
+    }
+
+    public func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+
+    public func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
+
     }
 
 }
 
-//// Moving/reordering
-//
-//// Allows the reorder accessory view to optionally be shown for a particular row. By default, the reorder control will be shown only if the datasource implements -tableView:moveRowAtIndexPath:toIndexPath:
-//@available(iOS 2.0, *)
-//optional public func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool
-//
-//// Index
-//
-//@available(iOS 2.0, *)
 //optional public func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? // return list of section titles to display in section index view (e.g. "ABCD...Z#")
 //@available(iOS 2.0, *)
 //optional public func tableView(tableView: UITableView, sectionForSectionIndexTitle title: String, atIndex index: Int) -> Int // tell table which section corresponds to section title/index (e.g. "B",1))
@@ -116,4 +132,3 @@ extension TableViewRenderer: UITableViewDataSource, UITableViewDelegate {
 //// Data manipulation - reorder / moving support
 //
 //@available(iOS 2.0, *)
-//optional public func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath)

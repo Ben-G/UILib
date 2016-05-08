@@ -10,7 +10,12 @@ import Foundation
 
 struct TableViewModel {
 
+    var editingMode: Bool = false
     let sections: [TableViewSectionModel]
+
+    init(sections: [TableViewSectionModel]) {
+        self.sections = sections
+    }
 
     subscript(indexPath: NSIndexPath) -> TableViewCellModel {
         return self.sections[indexPath.section].cells[indexPath.row]

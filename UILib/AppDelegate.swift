@@ -35,7 +35,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         userViewModel = UserViewComponent(renderer: renderer, state: initialState)
 
-        let viewController = FullScreenViewController(view: renderer)
+        let navigationBar = UINavigationBar()
+        let navigationItem = UINavigationItem()
+        navigationItem.title = "Test Title"
+        navigationBar.pushNavigationItem(navigationItem, animated: false)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: #selector(edit))
+
+        let stackView = UIStackView(arrangedSubviews: [
+            navigationBar,
+            renderer
+        ])
+
+        stackView.axis = .Vertical
+
+        let viewController = FullScreenViewController(view: stackView)
         viewController.view.frame = UIScreen.mainScreen().bounds
 
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
@@ -43,6 +56,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window?.makeKeyAndVisible()
 
         return true
+    }
+
+    @objc func edit() {
+        print("edit")
     }
 
 }
@@ -59,8 +76,12 @@ final class UserViewComponent: UserViewActionHandlerType {
         renderer.tableViewModel = userView(state, actionHandler: self)
     }
 
-    func deleteUser() {
-        self.state.removeLast()
-        renderer.tableViewModel = userView(state, actionHandler: self)
+    func deleteUser(indexPath: NSIndexPath) {
+        self.state.removeAtIndex(indexPath.row)
+
+        renderer.newViewModelWithChangeset(
+            userView(state, actionHandler: self),
+            changeSet: .Delete(indexPath)
+        )
     }
 }
