@@ -14,6 +14,7 @@ var userViewModel: UserViewComponent?
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var rootViewController: UIViewController!
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
@@ -41,25 +42,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         navigationBar.pushNavigationItem(navigationItem, animated: false)
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: #selector(edit))
 
+        let placeholder = VerticalMargin(margin: 20.0, color: .lightGrayColor())
+
         let stackView = UIStackView(arrangedSubviews: [
+            placeholder,
             navigationBar,
             renderer
         ])
 
         stackView.axis = .Vertical
+        stackView.backgroundColor = UIColor.whiteColor()
 
-        let viewController = FullScreenViewController(view: stackView)
-        viewController.view.frame = UIScreen.mainScreen().bounds
+        rootViewController = FullScreenViewController(view: stackView)
+        rootViewController.view.frame = UIScreen.mainScreen().bounds
 
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
-        self.window?.rootViewController = viewController
+        self.window?.rootViewController = rootViewController
         self.window?.makeKeyAndVisible()
 
         return true
     }
 
     @objc func edit() {
-        print("edit")
+        self.rootViewController.view.frame = CGRect(x: 0, y: 0, width: 200, height: 200)
     }
 
 }

@@ -11,6 +11,7 @@
 		252D25001CDA4A2A008D517F /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252D24FF1CDA4A2A008D517F /* UserCell.swift */; };
 		252D25041CDA4E83008D517F /* FullScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252D25031CDA4E83008D517F /* FullScreenViewController.swift */; };
 		259F7E7E1CD9782D00A3FFD9 /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259F7E7D1CD9782D00A3FFD9 /* UserView.swift */; };
+		25A75D641CE4D95F0086A82F /* VerticalMargin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A75D631CE4D95F0086A82F /* VerticalMargin.swift */; };
 		25CE2A641CD42B37006BD375 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CE2A631CD42B37006BD375 /* AppDelegate.swift */; };
 		25CE2A661CD42B37006BD375 /* RenderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CE2A651CD42B37006BD375 /* RenderViewController.swift */; };
 		25CE2A6B1CD42B37006BD375 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 25CE2A6A1CD42B37006BD375 /* Assets.xcassets */; };
@@ -26,6 +27,7 @@
 		252D24FF1CDA4A2A008D517F /* UserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserCell.swift; path = Example/UserCell.swift; sourceTree = "<group>"; };
 		252D25031CDA4E83008D517F /* FullScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullScreenViewController.swift; sourceTree = "<group>"; };
 		259F7E7D1CD9782D00A3FFD9 /* UserView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserView.swift; sourceTree = "<group>"; };
+		25A75D631CE4D95F0086A82F /* VerticalMargin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerticalMargin.swift; sourceTree = "<group>"; };
 		25CE2A601CD42B37006BD375 /* UILib.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UILib.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25CE2A631CD42B37006BD375 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		25CE2A651CD42B37006BD375 /* RenderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderViewController.swift; sourceTree = "<group>"; };
@@ -66,6 +68,14 @@
 			path = Controllers;
 			sourceTree = "<group>";
 		};
+		25A75D621CE4D9480086A82F /* LayoutComponents */ = {
+			isa = PBXGroup;
+			children = (
+				25A75D631CE4D95F0086A82F /* VerticalMargin.swift */,
+			);
+			name = LayoutComponents;
+			sourceTree = "<group>";
+		};
 		25CE2A571CD42B37006BD375 = {
 			isa = PBXGroup;
 			children = (
@@ -86,6 +96,7 @@
 		25CE2A621CD42B37006BD375 /* UILib */ = {
 			isa = PBXGroup;
 			children = (
+				25A75D621CE4D9480086A82F /* LayoutComponents */,
 				252D25021CDA4E78008D517F /* Controllers */,
 				25CE2A751CD42B4F006BD375 /* TableView */,
 				25CE2A631CD42B37006BD375 /* AppDelegate.swift */,
@@ -189,6 +200,7 @@
 				25CE2A641CD42B37006BD375 /* AppDelegate.swift in Sources */,
 				25CE2A791CD42B6D006BD375 /* TableViewSectionModel.swift in Sources */,
 				259F7E7E1CD9782D00A3FFD9 /* UserView.swift in Sources */,
+				25A75D641CE4D95F0086A82F /* VerticalMargin.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
