@@ -10,6 +10,9 @@
 		252D24FE1CDA49F4008D517F /* UserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 252D24FD1CDA49F4008D517F /* UserCell.xib */; };
 		252D25001CDA4A2A008D517F /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252D24FF1CDA4A2A008D517F /* UserCell.swift */; };
 		252D25041CDA4E83008D517F /* FullScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252D25031CDA4E83008D517F /* FullScreenViewController.swift */; };
+		2550A8041CE598C1004EA96E /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2550A8031CE598C1004EA96E /* Component.swift */; };
+		2550A8071CE59A85004EA96E /* VerticalMarginRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2550A8061CE59A85004EA96E /* VerticalMarginRenderer.swift */; };
+		2550A8091CE59E42004EA96E /* UIKitRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2550A8081CE59E42004EA96E /* UIKitRenderer.swift */; };
 		259F7E7E1CD9782D00A3FFD9 /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259F7E7D1CD9782D00A3FFD9 /* UserView.swift */; };
 		25A75D641CE4D95F0086A82F /* VerticalMargin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A75D631CE4D95F0086A82F /* VerticalMargin.swift */; };
 		25CE2A641CD42B37006BD375 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CE2A631CD42B37006BD375 /* AppDelegate.swift */; };
@@ -26,6 +29,9 @@
 		252D24FD1CDA49F4008D517F /* UserCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = UserCell.xib; path = Example/UserCell.xib; sourceTree = "<group>"; };
 		252D24FF1CDA4A2A008D517F /* UserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserCell.swift; path = Example/UserCell.swift; sourceTree = "<group>"; };
 		252D25031CDA4E83008D517F /* FullScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullScreenViewController.swift; sourceTree = "<group>"; };
+		2550A8031CE598C1004EA96E /* Component.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Component.swift; sourceTree = "<group>"; };
+		2550A8061CE59A85004EA96E /* VerticalMarginRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VerticalMarginRenderer.swift; path = UIKitRenderer/VerticalMarginRenderer.swift; sourceTree = "<group>"; };
+		2550A8081CE59E42004EA96E /* UIKitRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIKitRenderer.swift; path = UIKitRenderer/UIKitRenderer.swift; sourceTree = "<group>"; };
 		259F7E7D1CD9782D00A3FFD9 /* UserView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserView.swift; sourceTree = "<group>"; };
 		25A75D631CE4D95F0086A82F /* VerticalMargin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerticalMargin.swift; sourceTree = "<group>"; };
 		25CE2A601CD42B37006BD375 /* UILib.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UILib.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -68,6 +74,15 @@
 			path = Controllers;
 			sourceTree = "<group>";
 		};
+		2550A8051CE59A5E004EA96E /* UIKitRenderer */ = {
+			isa = PBXGroup;
+			children = (
+				2550A8061CE59A85004EA96E /* VerticalMarginRenderer.swift */,
+				2550A8081CE59E42004EA96E /* UIKitRenderer.swift */,
+			);
+			name = UIKitRenderer;
+			sourceTree = "<group>";
+		};
 		25A75D621CE4D9480086A82F /* LayoutComponents */ = {
 			isa = PBXGroup;
 			children = (
@@ -96,6 +111,7 @@
 		25CE2A621CD42B37006BD375 /* UILib */ = {
 			isa = PBXGroup;
 			children = (
+				2550A8051CE59A5E004EA96E /* UIKitRenderer */,
 				25A75D621CE4D9480086A82F /* LayoutComponents */,
 				252D25021CDA4E78008D517F /* Controllers */,
 				25CE2A751CD42B4F006BD375 /* TableView */,
@@ -105,6 +121,7 @@
 				25CE2A6C1CD42B37006BD375 /* LaunchScreen.storyboard */,
 				25CE2A6F1CD42B37006BD375 /* Info.plist */,
 				259F7E7D1CD9782D00A3FFD9 /* UserView.swift */,
+				2550A8031CE598C1004EA96E /* Component.swift */,
 			);
 			path = UILib;
 			sourceTree = "<group>";
@@ -195,11 +212,14 @@
 				25CE2A771CD42B5D006BD375 /* TableViewModel.swift in Sources */,
 				25CE2A661CD42B37006BD375 /* RenderViewController.swift in Sources */,
 				25CE2A7D1CD42B99006BD375 /* TableViewRenderer.swift in Sources */,
+				2550A8041CE598C1004EA96E /* Component.swift in Sources */,
 				25CE2A7B1CD42B77006BD375 /* TableViewCellModel.swift in Sources */,
+				2550A8071CE59A85004EA96E /* VerticalMarginRenderer.swift in Sources */,
 				252D25041CDA4E83008D517F /* FullScreenViewController.swift in Sources */,
 				25CE2A641CD42B37006BD375 /* AppDelegate.swift in Sources */,
 				25CE2A791CD42B6D006BD375 /* TableViewSectionModel.swift in Sources */,
 				259F7E7E1CD9782D00A3FFD9 /* UserView.swift in Sources */,
+				2550A8091CE59E42004EA96E /* UIKitRenderer.swift in Sources */,
 				25A75D641CE4D95F0086A82F /* VerticalMargin.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

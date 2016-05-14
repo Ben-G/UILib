@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct TableViewModel {
+struct TableViewModel: Component {
 
     var editingMode: Bool = false
     let sections: [TableViewSectionModel]

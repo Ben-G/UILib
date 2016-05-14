@@ -10,7 +10,7 @@ import UIKit
 
 typealias CommitEditingClosure = (NSIndexPath) -> Void
 
-struct TableViewCellModel {
+struct TableViewCellModel: Component {
     let cellIdentifier: String
     let canEdit: Bool
     let commitEditingClosure: CommitEditingClosure

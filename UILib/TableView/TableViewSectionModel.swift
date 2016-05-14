@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct TableViewSectionModel {
+struct TableViewSectionModel: Component {
 
     let cells: [TableViewCellModel]
 

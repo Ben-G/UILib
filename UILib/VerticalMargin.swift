@@ -8,32 +8,18 @@
 
 import UIKit
 
-class VerticalMargin: UIView {
+class VerticalMargin: Component {
 
-    var _margin: CGFloat
-    var _size: CGSize {
-        return CGSizeMake(0, self._margin)
-
-    }
+    var margin: CGFloat
+    var color: Color?
 
     convenience init(margin: CGFloat) {
-        self.init(margin: margin, color: .clearColor())
+        self.init(margin: margin, color: nil)
     }
 
-    init(margin: CGFloat, color: UIColor) {
-        self._margin = margin
-
-        super.init(frame: CGRectZero)
-
-        self.backgroundColor = color
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    override func intrinsicContentSize() -> CGSize {
-        return _size
+    init(margin: CGFloat, color: Color?) {
+        self.margin = margin
+        self.color = color
     }
 
 }
