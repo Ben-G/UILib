@@ -6,18 +6,18 @@
 //  Copyright © 2016 Benjamin Encz. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 class VerticalMargin: Component {
 
-    var margin: CGFloat
+    var margin: Float
     var color: Color?
 
-    convenience init(margin: CGFloat) {
+    convenience init(margin: Float) {
         self.init(margin: margin, color: nil)
     }
 
-    init(margin: CGFloat, color: Color?) {
+    init(margin: Float, color: Color?) {
         self.margin = margin
         self.color = color
     }

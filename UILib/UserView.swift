@@ -11,7 +11,7 @@ import Foundation
 func viewForStateA(target: AnyObject, selector: Selector) -> UIKitRenderable {
     let navigationBar = NavigationBarComponent(
         leftBarButton: nil,
-        rightBarButton: Button(title: "Edit", target: target, selector: selector),
+        rightBarButton: BarButton(title: "Edit", target: target, selector: selector),
         title: "Test Title"
     )
 
@@ -32,7 +32,7 @@ func viewForStateB() -> UIKitRenderable {
     let navigationBar = NavigationBarComponent(
         leftBarButton: nil,
         rightBarButton: nil,
-        title: "Test Title"
+        title: "Second Title"
     )
 
     let placeholder = VerticalMargin(margin: 20.0, color: Color(hexString: "lightGray"))

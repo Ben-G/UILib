@@ -20,9 +20,15 @@ struct Button: Component {
     let selector: Selector
 }
 
+struct BarButton: Component {
+    let title: String
+    let target: AnyObject
+    let selector: Selector
+}
+
 struct NavigationBarComponent: Component {
-    let leftBarButton: Button?
-    let rightBarButton: Button?
+    let leftBarButton: BarButton?
+    let rightBarButton: BarButton?
     let title: String
 }
 

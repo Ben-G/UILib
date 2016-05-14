@@ -18,9 +18,32 @@ extension NavigationBarComponent: UIKitRenderable {
         let navigationBar = UINavigationBar()
         let navigationItem = UINavigationItem()
         navigationItem.title = self.title
+
+        if let leftBarButton = self.leftBarButton {
+            navigationItem.leftBarButtonItem = leftBarButton.renderUIKit()
+        }
+
+        if let rightBarButton = self.rightBarButton {
+            navigationItem.rightBarButtonItem = rightBarButton.renderUIKit()
+        }
+
         navigationBar.pushNavigationItem(navigationItem, animated: false)
 
         return navigationBar
+    }
+
+}
+
+extension BarButton {
+
+    func renderUIKit() -> UIBarButtonItem {
+        let barButton = UIBarButtonItem(
+            barButtonSystemItem: .Edit,
+            target: self.target,
+            action: self.selector
+        )
+
+        return barButton
     }
 
 }

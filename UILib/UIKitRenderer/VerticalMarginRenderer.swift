@@ -8,25 +8,18 @@
 
 import UIKit
 
-final class VerticalMarginRenderer {
 
-    init(verticalMargin: VerticalMargin) {
-        self.verticalMargin = verticalMargin
+extension VerticalMargin: UIKitRenderable {
+
+    func renderUIKit() -> UIView {
+        let view = _VerticalMarginView()
+
+        view.backgroundColor = .redColor()
+        view._margin = CGFloat(self.margin)
+
+        return view
     }
 
-    lazy var view: _VerticalMarginView = { return _VerticalMarginView() }()
-    var verticalMargin: VerticalMargin
-
-    func toUIKitView() -> UIView {
-        var _size: CGSize {
-            return CGSizeMake(0, self.verticalMargin.margin)
-        }
-
-        self.view.backgroundColor = .redColor()
-        self.view._margin = self.verticalMargin.margin
-
-        return self.view
-    }
 }
 
 class _VerticalMarginView: UIView {
