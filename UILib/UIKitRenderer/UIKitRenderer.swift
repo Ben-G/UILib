@@ -8,6 +8,27 @@
 
 import UIKit
 
+final class RenderView<T>: Renderer {
+
+    var view = UIView()
+    var container: BaseComponentContainer<T>
+
+    init(container: BaseComponentContainer<T>) {
+        self.container = container
+        container.renderer = self
+    }
+
+    func renderComponent(component: Component) {
+        if let view = (component as? UIKitRenderable)?.renderUIKit() {
+            self.view.subviews.forEach { $0.removeFromSuperview() }
+            view.frame = self.view.frame
+            view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+            self.view.addSubview(view)
+        }
+    }
+
+}
+
 protocol UIKitRenderable {
     func renderUIKit() -> UIView
 }
@@ -39,13 +60,27 @@ extension BarButton {
     func renderUIKit() -> UIBarButtonItem {
         let barButton = UIBarButtonItem(
             barButtonSystemItem: .Edit,
-            target: self.target,
-            action: self.selector
+            target: self.onTapTarget,
+            action: self.onTapSelector
         )
+
+        barButton.title = self.title
 
         return barButton
     }
 
+}
+
+public final class TargetSelectorBridge {
+    var closure: (AnyObject) -> ()
+
+    init(closure: (AnyObject) -> ()) {
+        self.closure = closure
+    }
+
+    @objc func targetFunction(t: AnyObject) {
+        closure(t)
+    }
 }
 
 extension StackComponent: UIKitRenderable {

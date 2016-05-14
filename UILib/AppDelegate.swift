@@ -8,7 +8,8 @@
 
 import UIKit
 
-//var userViewModel: UserViewComponent?
+var userComponent: UserComponentContainer!
+var renderView: RenderView<UserViewState>!
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -18,10 +19,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 
-        let rootComponent = viewForStateA(self, selector: #selector(edit))
+        userComponent = UserComponentContainer(state: .A)
+        renderView = RenderView(container: userComponent)
 
         rootViewController = FullScreenViewController(
-            view: rootComponent.renderUIKit()
+            view: renderView.view
         )
         
         rootViewController.view.frame = UIScreen.mainScreen().bounds
@@ -31,10 +33,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window?.makeKeyAndVisible()
 
         return true
-    }
-
-    @objc func edit() {
-        self.rootViewController.view = viewForStateB().renderUIKit()
     }
 
 }

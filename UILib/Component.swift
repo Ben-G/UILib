@@ -22,8 +22,14 @@ struct Button: Component {
 
 struct BarButton: Component {
     let title: String
-    let target: AnyObject
-    let selector: Selector
+    let onTapTarget: AnyObject
+    let onTapSelector: Selector
+
+    init(title: String, onTapTarget: AnyObject, onTapSelector: Selector) {
+        self.title = title
+        self.onTapTarget = onTapTarget
+        self.onTapSelector = onTapSelector
+    }
 }
 
 struct NavigationBarComponent: Component {
