@@ -66,25 +66,51 @@ func applyReconcilation(
     changeSet: Changes,
     newComponent: Component) {
 
-    switch changeSet {
-    case let .Root(changes):
+    switch (changeSet, renderTree) {
+    case let (.Root(changes), .Node(_, _, childTree)):
+        // Apply change to root
+        renderTree.renderable.updateUIKit(renderTree.view, change: changeSet, newComponent: newComponent)
+
         for (index, change) in changes.enumerate() {
-            switch renderTree {
-            case let .Node(renderable, _, childrenRenderTree):
-                let childComponents = (newComponent as! ContainerComponent).childComponents
-                applyReconcilation(
-                    childrenRenderTree[index],
-                    changeSet: change,
-                    newComponent: childComponents[index]
-                )
-            case let .Leaf(renderable, view):
-                // hack wrapping in root here; until I've figured out mistake in recursion
-                renderable.updateUIKit(view, change: .Root(changes), newComponent: newComponent)
+            if case .Update = change {
+                // Only updates should be applied to children directly
+                let component = (newComponent as! ContainerComponent).childComponents[index]
+                let recycledView = childTree[index].view
+                childTree[index].renderable.updateUIKit(recycledView, change: change, newComponent: component)
+            }
+
+            if case .Root = change {
+                let component = (newComponent as! ContainerComponent).childComponents[index]
+                applyReconcilation(childTree[index], changeSet: change, newComponent: component)
             }
         }
-    case .Insert, .Remove, .Update, .None:
+    case let (.Root(changes), .Leaf(renderable, view)):
+        // Apply change to root
+        renderTree.renderable.updateUIKit(renderTree.view, change: changeSet, newComponent: newComponent)
+    default:
         break
     }
+
+
+//    switch changeSet {
+//    case let .Root(changes):
+//        for (index, change) in changes.enumerate() {
+//            switch renderTree {
+//            case let .Node(renderable, _, childrenRenderTree):
+//                let childComponents = (newComponent as! ContainerComponent).childComponents
+//                applyReconcilation(
+//                    childrenRenderTree[index],
+//                    changeSet: change,
+//                    newComponent: childComponents[index]
+//                )
+//            case let .Leaf(renderable, view):
+//                // hack wrapping in root here; until I've figured out mistake in recursion
+//                renderable.updateUIKit(view, change: .Root(changes), newComponent: newComponent)
+//            }
+//        }
+//    case .Insert, .Remove, .Update, .None:
+//        break
+//    }
 }
 
 func reconcile(oldTree: ContainerComponent, newTree: ContainerComponent) -> Changes {
@@ -219,6 +245,12 @@ extension StackComponent: UIKitRenderable {
 
         return .Node(self, stackView, children)
     }
+//
+//    func updateUIKit(view: UIView, change: Changes, newComponent: Component) -> UIKitRenderTree {
+//        
+//
+//        return .Node(newComponent, view, children)
+//    }
 
 }
 
