@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         userComponent = UserComponentContainer(state:
             UserViewState(
-                abState: .A,
+                abState: .B,
                 users: [
                     "OK",
                     "Benji",

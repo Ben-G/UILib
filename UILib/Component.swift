@@ -12,7 +12,17 @@ struct Color {
     let hexString: String
 }
 
-protocol Component { }
+public protocol Component {
+    var componentIdentifier: String { get }
+}
+
+extension Component {
+    var componentIdentifier: String { return String(self.dynamicType) }
+}
+
+public func == (lhs: Component, rhs: Component) -> Bool {
+    return true
+}
 
 protocol ContainerComponent {
     var childComponents: [Component] { get }

@@ -33,11 +33,15 @@ class UserComponentContainer: BaseComponentContainer<UserViewState> {
         self.state.abState = .A
     }
 
+    @objc func addButtonTapped(button: AnyObject) {
+        self.state.users.append("More Items!")
+    }
+
     func deleteRow(indexPath: NSIndexPath) {
         self.state.users.removeAtIndex(indexPath.row)
     }
 
-    override func render(state: UserViewState) -> Component {
+    override func render(state: UserViewState) -> ContainerComponent {
         switch state.abState {
         case .A:
             return {
@@ -70,7 +74,11 @@ class UserComponentContainer: BaseComponentContainer<UserViewState> {
                         onTapTarget: self,
                         onTapSelector: #selector(backButtonTapped)
                     ),
-                    rightBarButton: nil,
+                    rightBarButton: BarButton(
+                        title: "Add Item",
+                        onTapTarget: self,
+                        onTapSelector: #selector(addButtonTapped)
+                    ),
                     title: "Second Title"
                 )
 

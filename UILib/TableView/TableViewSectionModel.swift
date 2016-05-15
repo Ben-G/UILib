@@ -8,7 +8,11 @@
 
 import Foundation
 
-struct TableViewSectionModel: Component {
+struct TableViewSectionModel: Component, ContainerComponent {
+
+    var childComponents: [Component] {
+        return self.cells.map { $0 as Component }
+    }
 
     let cells: [TableViewCellModel]
 

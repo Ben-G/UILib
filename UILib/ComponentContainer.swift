@@ -9,7 +9,7 @@
 import Foundation
 
 protocol Renderer: class {
-    func renderComponent(component: Component)
+    func renderComponent(component: ContainerComponent)
 }
 
 class BaseComponentContainer<State> {
@@ -34,7 +34,7 @@ class BaseComponentContainer<State> {
         self.renderer?.renderComponent(component)
     }
 
-    func render(state: State) -> Component {
+    func render(state: State) -> ContainerComponent {
         fatalError()
     }
     

@@ -8,7 +8,11 @@
 
 import Foundation
 
-struct TableViewModel: Component {
+struct TableViewModel: Component, ContainerComponent {
+
+    var childComponents: [Component] {
+        return self.sections.map { $0 as Component }
+    }
 
     var editingMode: Bool = false
     let sections: [TableViewSectionModel]
