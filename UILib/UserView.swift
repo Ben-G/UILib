@@ -8,6 +8,15 @@
 
 import Foundation
 
+struct User {
+    var name: String
+    var uid: String = NSUUID().UUIDString
+
+    init(_ name: String) {
+        self.name = name
+    }
+}
+
 enum ABState {
     case A
     case B
@@ -16,7 +25,7 @@ enum ABState {
 struct UserViewState {
     var abState: ABState
 
-    var users: [String]
+    var users: [User]
 }
 
 class UserComponentContainer: BaseComponentContainer<UserViewState> {
@@ -34,7 +43,7 @@ class UserComponentContainer: BaseComponentContainer<UserViewState> {
     }
 
     @objc func addButtonTapped(button: AnyObject) {
-        self.state.users.append("More Items!")
+        self.state.users.append(User("Another User!"))
     }
 
     func deleteRow(indexPath: NSIndexPath) {
@@ -111,11 +120,11 @@ class UserComponentContainer: BaseComponentContainer<UserViewState> {
         }
     }
 
-    func cellModelForUser(user: String, onDelete: (NSIndexPath) -> Void) -> TableViewCellModel {
+    func cellModelForUser(user: User, onDelete: (NSIndexPath) -> Void) -> TableViewCellModel {
             return TableViewCellModel(
                 cellIdentifier: "UserCell",
-                componentIdentifier: user,
-                applyViewModelToCell: applyViewModelUserCell(user),
+                componentIdentifier: user.uid,
+                applyViewModelToCell: applyViewModelUserCell(user.name),
                 commitEditingClosure: onDelete
             )
     }

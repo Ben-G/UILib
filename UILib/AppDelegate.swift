@@ -23,9 +23,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UserViewState(
                 abState: .B,
                 users: [
-                    "OK",
-                    "Benji",
-                    "Another User"
+                    User("OK"),
+                    User("Benji"),
+                    User("Another User")
                 ]
             )
         )
