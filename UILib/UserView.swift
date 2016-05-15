@@ -54,7 +54,7 @@ class UserComponentContainer: BaseComponentContainer<UserViewState> {
                 let placeholder = VerticalMargin(margin: 20.0, color: Color(hexString: "lightGray"))
                 let mainView = VerticalMargin(margin: 100.0, color: Color(hexString: "lightGray"))
 
-                let stackView = StackComponent(components: [
+                let stackView = StackComponent(childComponents: [
                     placeholder,
                     navigationBar,
                     mainView
@@ -92,7 +92,7 @@ class UserComponentContainer: BaseComponentContainer<UserViewState> {
                     cellTypeDefinitions: cellTypes
                 )
 
-                let stackView = StackComponent(components: [
+                let stackView = StackComponent(childComponents: [
                     placeholder,
                     navigationBar,
                     tableViewModel
@@ -107,7 +107,7 @@ class UserComponentContainer: BaseComponentContainer<UserViewState> {
             return TableViewCellModel(
                 cellIdentifier: "UserCell",
                 applyViewModelToCell: applyViewModelUserCell(user),
-                commitEditingClosure:  { _ in }
+                commitEditingClosure: onDelete
             )
     }
 

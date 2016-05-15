@@ -14,6 +14,18 @@ struct Color {
 
 protocol Component { }
 
+protocol ContainerComponent {
+    var childComponents: [Component] { get }
+}
+
+extension ContainerComponent {
+
+    var description: String {
+        return self.childComponents.description
+    }
+
+}
+
 struct Button: Component {
     let title: String
     let target: AnyObject
@@ -38,7 +50,7 @@ struct NavigationBarComponent: Component {
     let title: String
 }
 
-struct StackComponent: Component {
-    let components: [Component]
+struct StackComponent: Component, ContainerComponent {
+    let childComponents: [Component]
     let backgroundColor: Color
 }

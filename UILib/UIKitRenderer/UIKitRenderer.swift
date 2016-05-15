@@ -20,7 +20,10 @@ final class RenderView<T>: Renderer {
 
     func renderComponent(component: Component) {
         if let view = (component as? UIKitRenderable)?.renderUIKit() {
-            self.view.subviews.forEach { $0.removeFromSuperview() }
+            self.view.subviews.forEach {
+                $0.removeFromSuperview()
+            }
+
             view.frame = self.view.frame
             view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
             self.view.addSubview(view)
@@ -74,7 +77,7 @@ extension BarButton {
 extension StackComponent: UIKitRenderable {
 
     func renderUIKit() -> UIView {
-        let childComponents = self.components.flatMap { $0 as? UIKitRenderable }
+        let childComponents = self.childComponents.flatMap { $0 as? UIKitRenderable }
         let childViews = childComponents.map { component in
             component.renderUIKit()
         }
