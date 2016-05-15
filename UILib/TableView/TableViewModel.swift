@@ -12,9 +12,11 @@ struct TableViewModel: Component {
 
     var editingMode: Bool = false
     let sections: [TableViewSectionModel]
+    let cellTypeDefinitions: [CellTypeDefinition]
 
-    init(sections: [TableViewSectionModel]) {
+    init(sections: [TableViewSectionModel], cellTypeDefinitions: [CellTypeDefinition]) {
         self.sections = sections
+        self.cellTypeDefinitions = cellTypeDefinitions
     }
 
     subscript(indexPath: NSIndexPath) -> TableViewCellModel {

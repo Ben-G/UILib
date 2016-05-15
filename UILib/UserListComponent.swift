@@ -6,24 +6,23 @@
 //  Copyright © 2016 Benjamin Encz. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+extension TableViewModel: UIKitRenderable {
+
+    func renderUIKit() -> UIView {
+        let tableViewRenderer = TableViewRenderer(
+            cellTypes: self.cellTypeDefinitions
+        )
+
+        tableViewRenderer.tableViewModel = self
+
+        return tableViewRenderer
+    }
+
+}
 
 
-//
-//
-//
-//
-//
-//let cellTypes = [CellTypeDefinition(
-//    nibFilename: "UserCell",
-//    cellIdentifier: "UserCell"
-//    )]
-//
-//let initialState = [
-//    "OK",
-//    "Benji",
-//    "Another User"
-//]
 //
 //let userViewComponent = UserViewComponent(state: initialState)
 //

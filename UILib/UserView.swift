@@ -66,14 +66,43 @@ class UserComponentContainer: BaseComponentContainer<UserViewState> {
 
                 let placeholder = VerticalMargin(margin: 20.0, color: Color(hexString: "lightGray"))
 
+                let cellTypes = [CellTypeDefinition(
+                    nibFilename: "UserCell",
+                    cellIdentifier: "UserCell"
+                    )]
+                
+                let initialState = [
+                    "OK",
+                    "Benji",
+                    "Another User"
+                ]
+
+                let tableViewModel = TableViewModel(
+                    sections: [
+                        TableViewSectionModel(
+                            cells: initialState.map(self.cellModelForUser)
+                        )
+                    ],
+                    cellTypeDefinitions: cellTypes
+                )
+
                 let stackView = StackComponent(components: [
                     placeholder,
-                    navigationBar
+                    navigationBar,
+                    tableViewModel
                     ], backgroundColor: Color(hexString: "whiteColor"))
                 
                 return stackView
             }()
         }
+    }
+
+    func cellModelForUser(user: String) -> TableViewCellModel {
+            return TableViewCellModel(
+                cellIdentifier: "UserCell",
+                applyViewModelToCell: applyViewModelUserCell(user),
+                commitEditingClosure:  { _ in }
+            )
     }
 
 }

@@ -71,18 +71,6 @@ extension BarButton {
 
 }
 
-public final class TargetSelectorBridge {
-    var closure: (AnyObject) -> ()
-
-    init(closure: (AnyObject) -> ()) {
-        self.closure = closure
-    }
-
-    @objc func targetFunction(t: AnyObject) {
-        closure(t)
-    }
-}
-
 extension StackComponent: UIKitRenderable {
 
     func renderUIKit() -> UIView {
@@ -98,4 +86,11 @@ extension StackComponent: UIKitRenderable {
         return stackView
     }
 
+}
+
+func applyViewModelUserCell(user: String) -> (cell: UITableViewCell) -> Void {
+    return { cell in
+        guard let cell = cell as? UserCell else { return }
+        cell.nameLabel.text = user
+    }
 }
