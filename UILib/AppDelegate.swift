@@ -19,7 +19,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 
-        userComponent = UserComponentContainer(state: .A)
+        userComponent = UserComponentContainer(state:
+            UserViewState(
+                abState: .A,
+                users: [
+                    "OK",
+                    "Benji",
+                    "Another User"
+                ]
+            )
+        )
+        
         renderView = RenderView(container: userComponent)
 
         rootViewController = FullScreenViewController(

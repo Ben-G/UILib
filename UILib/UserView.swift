@@ -8,9 +8,15 @@
 
 import Foundation
 
-enum UserViewState {
+enum ABState {
     case A
     case B
+}
+
+struct UserViewState {
+    var abState: ABState
+
+    var users: [String]
 }
 
 class UserComponentContainer: BaseComponentContainer<UserViewState> {
@@ -20,15 +26,19 @@ class UserComponentContainer: BaseComponentContainer<UserViewState> {
     }
 
     @objc func editButtonTapped(button: AnyObject) {
-        self.state = .B
+        self.state.abState = .B
     }
 
     @objc func backButtonTapped(button: AnyObject) {
-        self.state = .A
+        self.state.abState = .A
+    }
+
+    func deleteRow(indexPath: NSIndexPath) {
+        self.state.users.removeAtIndex(indexPath.row)
     }
 
     override func render(state: UserViewState) -> Component {
-        switch state {
+        switch state.abState {
         case .A:
             return {
                 let navigationBar = NavigationBarComponent(
@@ -70,17 +80,13 @@ class UserComponentContainer: BaseComponentContainer<UserViewState> {
                     nibFilename: "UserCell",
                     cellIdentifier: "UserCell"
                     )]
-                
-                let initialState = [
-                    "OK",
-                    "Benji",
-                    "Another User"
-                ]
 
                 let tableViewModel = TableViewModel(
                     sections: [
                         TableViewSectionModel(
-                            cells: initialState.map(self.cellModelForUser)
+                            cells: state.users.map {
+                                self.cellModelForUser($0, onDelete: self.deleteRow)
+                            }
                         )
                     ],
                     cellTypeDefinitions: cellTypes
@@ -97,7 +103,7 @@ class UserComponentContainer: BaseComponentContainer<UserViewState> {
         }
     }
 
-    func cellModelForUser(user: String) -> TableViewCellModel {
+    func cellModelForUser(user: String, onDelete: (NSIndexPath) -> Void) -> TableViewCellModel {
             return TableViewCellModel(
                 cellIdentifier: "UserCell",
                 applyViewModelToCell: applyViewModelUserCell(user),
