@@ -18,6 +18,7 @@ struct TableViewCellModel: Component {
 
     init(
         cellIdentifier: String,
+        componentIdentifier: String,
         applyViewModelToCell: (UITableViewCell) -> Void,
         commitEditingClosure: CommitEditingClosure
     ) {
@@ -25,5 +26,8 @@ struct TableViewCellModel: Component {
         self.applyViewModelToCell = applyViewModelToCell
         self.commitEditingClosure = commitEditingClosure
         self.canEdit = true
+        self.componentIdentifier = componentIdentifier
     }
+
+    var componentIdentifier: String
 }

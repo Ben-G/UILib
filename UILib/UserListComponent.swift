@@ -37,6 +37,11 @@ extension TableViewModel: UIKitRenderable {
                                 [NSIndexPath(forRow: row, inSection: sectionIndex)],
                                 withRowAnimation: .Automatic
                             )
+                        case let .Insert(row, _):
+                            view.tableView.insertRowsAtIndexPaths(
+                                [NSIndexPath(forRow: row, inSection: sectionIndex)],
+                                withRowAnimation: .Automatic
+                            )
                         default:
                             break
                         }

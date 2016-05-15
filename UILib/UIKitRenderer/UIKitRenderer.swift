@@ -106,7 +106,7 @@ func reconcile(oldTree: ContainerComponent, newTree: ContainerComponent) -> Chan
     diff.results.forEach { diffStep in
         switch diffStep {
         case let .Insert(index, identifier):
-            changes[index] = .Insert(index: index, identifier: identifier)
+            changes.append(.Insert(index: index, identifier: identifier))
         case let .Delete(index, _):
             changes[index] = .Remove(index: index)
         }

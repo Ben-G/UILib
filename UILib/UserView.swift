@@ -114,6 +114,7 @@ class UserComponentContainer: BaseComponentContainer<UserViewState> {
     func cellModelForUser(user: String, onDelete: (NSIndexPath) -> Void) -> TableViewCellModel {
             return TableViewCellModel(
                 cellIdentifier: "UserCell",
+                componentIdentifier: user,
                 applyViewModelToCell: applyViewModelUserCell(user),
                 commitEditingClosure: onDelete
             )
