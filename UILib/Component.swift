@@ -24,7 +24,7 @@ public func == (lhs: Component, rhs: Component) -> Bool {
     return true
 }
 
-protocol ContainerComponent {
+protocol ContainerComponent: Component {
     var childComponents: [Component] { get }
 
     func applyChanges(change: Changes)
@@ -32,7 +32,7 @@ protocol ContainerComponent {
 
 extension ContainerComponent {
     func applyChanges(change: Changes) {
-        print(change)
+//        print(change)
     }
 }
 

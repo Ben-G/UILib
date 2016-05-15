@@ -29,20 +29,24 @@ final class RenderView<T>: Renderer {
         if let lastRootComponent = self.lastRootComponent, lastRenderTree = lastRenderTree {
             // Reconciled rendering
             let reconcilerResults = reconcile(lastRootComponent, newTree: component)
-            print(reconcilerResults)
-            applyReconcilation(lastRenderTree, changeSet: reconcilerResults)
+
+            applyReconcilation(
+                lastRenderTree,
+                changeSet: reconcilerResults,
+                newComponent: component
+            )
         } else {
             // Full render pass
-            if let view = (component as? UIKitRenderable)?.renderUIKit() {
+            if let renderTree = (component as? UIKitRenderable)?.renderUIKit() {
                 self.view.subviews.forEach {
                     $0.removeFromSuperview()
                 }
 
-                self.lastRenderTree = view.1
+                self.lastRenderTree = renderTree
 
-                view.0.frame = self.view.frame
-                view.0.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
-                self.view.addSubview(view.0)
+                renderTree.view.frame = self.view.frame
+                renderTree.view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+                self.view.addSubview(renderTree.view)
             }
         }
     }
@@ -57,17 +61,25 @@ enum Changes{
     indirect case Root([Changes])
 }
 
-func applyReconcilation(renderTree: UIKitRenderTree, changeSet: Changes) {
+func applyReconcilation(
+    renderTree: UIKitRenderTree,
+    changeSet: Changes,
+    newComponent: Component) {
 
     switch changeSet {
     case let .Root(changes):
         for (index, change) in changes.enumerate() {
             switch renderTree {
-            case let .Node(renderable, childrenRenderTree):
-                print("apply changes to \(renderable)")
-                applyReconcilation(childrenRenderTree[index], changeSet: change)
-            case let .Leaf(renderable):
-                print("applying changes now to \(renderable)!")
+            case let .Node(renderable, _, childrenRenderTree):
+                let childComponents = (newComponent as! ContainerComponent).childComponents
+                applyReconcilation(
+                    childrenRenderTree[index],
+                    changeSet: change,
+                    newComponent: childComponents[index]
+                )
+            case let .Leaf(renderable, view):
+                // hack wrapping in root here; until I've figured out mistake in recursion
+                renderable.updateUIKit(view, change: .Root(changes), newComponent: newComponent)
             }
         }
     case .Insert, .Remove, .Update, .None:
@@ -117,17 +129,42 @@ func reconcile(oldTree: ContainerComponent, newTree: ContainerComponent) -> Chan
 }
 
 enum UIKitRenderTree {
-    indirect case Node(UIKitRenderable, [UIKitRenderTree])
-    case Leaf(UIKitRenderable)
+    indirect case Node(UIKitRenderable, UIView, [UIKitRenderTree])
+    case Leaf(UIKitRenderable, UIView)
+
+    var view: UIView {
+        switch self {
+        case let .Node(_, view, _):
+            return view
+        case let .Leaf(_, view):
+            return view
+        }
+    }
+
+    var renderable: UIKitRenderable {
+        switch self {
+        case let .Node(renderable, _, _):
+            return renderable
+        case let .Leaf(renderable, _):
+            return renderable
+        }
+    }
 }
 
 protocol UIKitRenderable {
-    func renderUIKit() -> (UIView, UIKitRenderTree)
+    func renderUIKit() -> UIKitRenderTree
+    func updateUIKit(view: UIView, change: Changes, newComponent: Component) -> UIKitRenderTree
+}
+
+extension UIKitRenderable {
+    func updateUIKit(view: UIView, change: Changes, newComponent: Component) -> UIKitRenderTree {
+        return self.renderUIKit()
+    }
 }
 
 extension NavigationBarComponent: UIKitRenderable {
 
-    func renderUIKit() -> (UIView, UIKitRenderTree) {
+    func renderUIKit() -> UIKitRenderTree {
         let navigationBar = UINavigationBar()
         let navigationItem = UINavigationItem()
         navigationItem.title = self.title
@@ -142,7 +179,7 @@ extension NavigationBarComponent: UIKitRenderable {
 
         navigationBar.pushNavigationItem(navigationItem, animated: false)
 
-        return (navigationBar, .Leaf(self))
+        return .Leaf(self, navigationBar)
     }
 
 }
@@ -165,7 +202,7 @@ extension BarButton {
 
 extension StackComponent: UIKitRenderable {
 
-    func renderUIKit() -> (UIView, UIKitRenderTree) {
+    func renderUIKit() -> UIKitRenderTree {
         var childViews: [UIView]
         var childRenderables: [UIKitRenderTree]
 
@@ -174,15 +211,13 @@ extension StackComponent: UIKitRenderable {
             component.renderUIKit()
         }
 
-
-        childViews = children.map { $0.0 }
-        childRenderables = children.map { $0.1 }
+        childViews = children.map { $0.view }
 
         let stackView = UIStackView(arrangedSubviews: childViews)
         stackView.axis = .Vertical
         stackView.backgroundColor = .whiteColor()
 
-        return (stackView, .Node(self, childRenderables))
+        return .Node(self, stackView, children)
     }
 
 }

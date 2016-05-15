@@ -11,13 +11,13 @@ import UIKit
 
 extension VerticalMargin: UIKitRenderable {
 
-    func renderUIKit() -> (UIView, UIKitRenderTree) {
+    func renderUIKit() -> UIKitRenderTree {
         let view = _VerticalMarginView()
 
         view.backgroundColor = .redColor()
         view._margin = CGFloat(self.margin)
 
-        return (view, .Leaf(self))
+        return .Leaf(self, view)
     }
 
 }

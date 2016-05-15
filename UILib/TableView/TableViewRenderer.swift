@@ -23,7 +23,6 @@ public final class TableViewRenderer: UIView {
         didSet {
             self._tableViewModel = tableViewModel!
             self.tableView.setEditing(tableViewModel?.editingMode ?? false, animated: true)
-            self.tableView.reloadData()
         }
     }
 
