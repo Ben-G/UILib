@@ -26,6 +26,14 @@ public func == (lhs: Component, rhs: Component) -> Bool {
 
 protocol ContainerComponent {
     var childComponents: [Component] { get }
+
+    func applyChanges(change: Changes)
+}
+
+extension ContainerComponent {
+    func applyChanges(change: Changes) {
+        print(change)
+    }
 }
 
 extension ContainerComponent {

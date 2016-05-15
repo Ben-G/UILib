@@ -29,6 +29,7 @@ final class RenderView<T>: Renderer {
             // Reconciled rendering
             let reconcilerResults = reconcile(lastRootComponent, newTree: component)
             print(reconcilerResults)
+            applyReconcilation(component, changeSet: reconcilerResults)
         } else {
             // Full render pass
             if let view = (component as? UIKitRenderable)?.renderUIKit() {
@@ -51,6 +52,22 @@ enum Changes{
     case Update
     case None
     indirect case Root([Changes])
+}
+
+func applyReconcilation(rootComponent: ContainerComponent, changeSet: Changes) {
+
+    switch changeSet {
+    case let .Root(changes):
+        for (index, change) in changes.enumerate() {
+            if let container = rootComponent.childComponents[index] as? ContainerComponent {
+                applyReconcilation(container, changeSet: change)
+            } else {
+                rootComponent.applyChanges(change)
+            }
+        }
+    case .Insert, .Remove, .Update, .None:
+        break
+    }
 }
 
 func reconcile(oldTree: ContainerComponent, newTree: ContainerComponent) -> Changes {
