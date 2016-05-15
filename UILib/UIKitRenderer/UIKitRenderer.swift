@@ -14,6 +14,7 @@ final class RenderView<T>: Renderer {
     var container: BaseComponentContainer<T>
 
     var lastRootComponent: ContainerComponent?
+    var lastRenderTree: UIKitRenderTree?
 
     init(container: BaseComponentContainer<T>) {
         self.container = container
@@ -25,11 +26,11 @@ final class RenderView<T>: Renderer {
             self.lastRootComponent = component
         }
 
-        if let lastRootComponent = self.lastRootComponent {
+        if let lastRootComponent = self.lastRootComponent, lastRenderTree = lastRenderTree {
             // Reconciled rendering
             let reconcilerResults = reconcile(lastRootComponent, newTree: component)
             print(reconcilerResults)
-            applyReconcilation(component, changeSet: reconcilerResults)
+            applyReconcilation(lastRenderTree, changeSet: reconcilerResults)
         } else {
             // Full render pass
             if let view = (component as? UIKitRenderable)?.renderUIKit() {
@@ -37,9 +38,11 @@ final class RenderView<T>: Renderer {
                     $0.removeFromSuperview()
                 }
 
-                view.frame = self.view.frame
-                view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
-                self.view.addSubview(view)
+                self.lastRenderTree = view.1
+
+                view.0.frame = self.view.frame
+                view.0.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+                self.view.addSubview(view.0)
             }
         }
     }
@@ -54,15 +57,17 @@ enum Changes{
     indirect case Root([Changes])
 }
 
-func applyReconcilation(rootComponent: ContainerComponent, changeSet: Changes) {
+func applyReconcilation(renderTree: UIKitRenderTree, changeSet: Changes) {
 
     switch changeSet {
     case let .Root(changes):
         for (index, change) in changes.enumerate() {
-            if let container = rootComponent.childComponents[index] as? ContainerComponent {
-                applyReconcilation(container, changeSet: change)
-            } else {
-                rootComponent.applyChanges(change)
+            switch renderTree {
+            case let .Node(renderable, childrenRenderTree):
+                print("apply changes to \(renderable)")
+                applyReconcilation(childrenRenderTree[index], changeSet: change)
+            case let .Leaf(renderable):
+                print("applying changes now to \(renderable)!")
             }
         }
     case .Insert, .Remove, .Update, .None:
@@ -111,13 +116,18 @@ func reconcile(oldTree: ContainerComponent, newTree: ContainerComponent) -> Chan
     return .Root(changes)
 }
 
+enum UIKitRenderTree {
+    indirect case Node(UIKitRenderable, [UIKitRenderTree])
+    case Leaf(UIKitRenderable)
+}
+
 protocol UIKitRenderable {
-    func renderUIKit() -> UIView
+    func renderUIKit() -> (UIView, UIKitRenderTree)
 }
 
 extension NavigationBarComponent: UIKitRenderable {
 
-    func renderUIKit() -> UIView {
+    func renderUIKit() -> (UIView, UIKitRenderTree) {
         let navigationBar = UINavigationBar()
         let navigationItem = UINavigationItem()
         navigationItem.title = self.title
@@ -132,7 +142,7 @@ extension NavigationBarComponent: UIKitRenderable {
 
         navigationBar.pushNavigationItem(navigationItem, animated: false)
 
-        return navigationBar
+        return (navigationBar, .Leaf(self))
     }
 
 }
@@ -155,17 +165,24 @@ extension BarButton {
 
 extension StackComponent: UIKitRenderable {
 
-    func renderUIKit() -> UIView {
+    func renderUIKit() -> (UIView, UIKitRenderTree) {
+        var childViews: [UIView]
+        var childRenderables: [UIKitRenderTree]
+
         let childComponents = self.childComponents.flatMap { $0 as? UIKitRenderable }
-        let childViews = childComponents.map { component in
+        let children = childComponents.map { component in
             component.renderUIKit()
         }
+
+
+        childViews = children.map { $0.0 }
+        childRenderables = children.map { $0.1 }
 
         let stackView = UIStackView(arrangedSubviews: childViews)
         stackView.axis = .Vertical
         stackView.backgroundColor = .whiteColor()
 
-        return stackView
+        return (stackView, .Node(self, childRenderables))
     }
 
 }

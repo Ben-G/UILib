@@ -10,14 +10,14 @@ import UIKit
 
 extension TableViewModel: UIKitRenderable {
 
-    func renderUIKit() -> UIView {
+    func renderUIKit() -> (UIView, UIKitRenderTree) {
         let tableViewRenderer = TableViewRenderer(
             cellTypes: self.cellTypeDefinitions
         )
 
         tableViewRenderer.tableViewModel = self
 
-        return tableViewRenderer
+        return (tableViewRenderer, .Leaf(self))
     }
 
 }
