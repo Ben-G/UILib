@@ -175,7 +175,8 @@ protocol UIKitRenderable {
 
 extension UIKitRenderable {
     func updateUIKit(view: UIView, change: Changes, newComponent: UIKitRenderable, renderTree: UIKitRenderTree) -> UIKitRenderTree {
-        return self.renderUIKit()
+
+        return .Leaf(self, view)
     }
 }
 
@@ -261,6 +262,7 @@ extension StackComponent: UIKitRenderable {
                 case let .Remove(index):
                     let childView = children[index].view
                     stackView.removeArrangedSubview(childView)
+                    childView.removeFromSuperview()
                     children.removeAtIndex(index)
                 default:
                     break
