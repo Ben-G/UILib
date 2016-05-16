@@ -33,7 +33,7 @@ final class RenderView<T>: Renderer {
             applyReconcilation(
                 lastRenderTree,
                 changeSet: reconcilerResults,
-                newComponent: component
+                newComponent: component as! UIKitRenderable
             )
         } else {
             // Full render pass
@@ -64,29 +64,29 @@ enum Changes{
 func applyReconcilation(
     renderTree: UIKitRenderTree,
     changeSet: Changes,
-    newComponent: Component) {
+    newComponent: UIKitRenderable) {
 
     switch (changeSet, renderTree) {
     case let (.Root(changes), .Node(_, _, childTree)):
         // Apply change to root
-        renderTree.renderable.updateUIKit(renderTree.view, change: changeSet, newComponent: newComponent)
+        renderTree.renderable.updateUIKit(renderTree.view, change: changeSet, newComponent: newComponent, renderTree: renderTree)
 
         for (index, change) in changes.enumerate() {
             if case .Update = change {
                 // Only updates should be applied to children directly
-                let component = (newComponent as! ContainerComponent).childComponents[index]
+                let component = (newComponent as! ContainerComponent).childComponents[index] as! UIKitRenderable
                 let recycledView = childTree[index].view
-                childTree[index].renderable.updateUIKit(recycledView, change: change, newComponent: component)
+                childTree[index].renderable.updateUIKit(recycledView, change: change, newComponent: component, renderTree: renderTree)
             }
 
             if case .Root = change {
-                let component = (newComponent as! ContainerComponent).childComponents[index]
+                let component = (newComponent as! ContainerComponent).childComponents[index] as! UIKitRenderable
                 applyReconcilation(childTree[index], changeSet: change, newComponent: component)
             }
         }
     case let (.Root(changes), .Leaf(renderable, view)):
         // Apply change to root
-        renderTree.renderable.updateUIKit(renderTree.view, change: changeSet, newComponent: newComponent)
+        renderTree.renderable.updateUIKit(renderTree.view, change: changeSet, newComponent: newComponent, renderTree: renderTree)
     default:
         break
     }
@@ -179,11 +179,11 @@ enum UIKitRenderTree {
 
 protocol UIKitRenderable {
     func renderUIKit() -> UIKitRenderTree
-    func updateUIKit(view: UIView, change: Changes, newComponent: Component) -> UIKitRenderTree
+    func updateUIKit(view: UIView, change: Changes, newComponent: UIKitRenderable, renderTree: UIKitRenderTree) -> UIKitRenderTree
 }
 
 extension UIKitRenderable {
-    func updateUIKit(view: UIView, change: Changes, newComponent: Component) -> UIKitRenderTree {
+    func updateUIKit(view: UIView, change: Changes, newComponent: UIKitRenderable, renderTree: UIKitRenderTree) -> UIKitRenderTree {
         return self.renderUIKit()
     }
 }
@@ -245,12 +245,41 @@ extension StackComponent: UIKitRenderable {
 
         return .Node(self, stackView, children)
     }
-//
-//    func updateUIKit(view: UIView, change: Changes, newComponent: Component) -> UIKitRenderTree {
-//        
-//
-//        return .Node(newComponent, view, children)
-//    }
+
+    func updateUIKit(
+        view: UIView,
+        change: Changes,
+        newComponent: UIKitRenderable,
+        renderTree: UIKitRenderTree
+    ) -> UIKitRenderTree {
+
+        guard let stackView = view as? UIStackView else { fatalError() }
+        guard case let .Node(_, _, childTree) = renderTree else { fatalError() }
+
+        var children = childTree
+
+        if case let .Root(changes) = change {
+
+            for change in changes {
+
+                switch change {
+                case let .Insert(index, _):
+                    let renderTreeEntry = ((newComponent as! ContainerComponent).childComponents[index] as! UIKitRenderable).renderUIKit()
+                    stackView.insertArrangedSubview(renderTreeEntry.view, atIndex: index)
+                    children.insert(renderTreeEntry, atIndex: index)
+                case let .Remove(index):
+                    let childView = children[index].view
+                    stackView.removeArrangedSubview(childView)
+                    children.removeAtIndex(index)
+                default:
+                    break
+                }
+            }
+
+        }
+
+        return .Node(self, stackView, children)
+    }
 
 }
 
