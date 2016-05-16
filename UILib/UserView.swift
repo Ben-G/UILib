@@ -85,7 +85,6 @@ class UserComponentContainer: BaseComponentContainer<UserViewState> {
                 let stackView = StackComponent(childComponents: [
                     placeholder,
                     navigationBar,
-                    navigationBar2,
                     mainView
                     ], backgroundColor: Color(hexString: "whiteColor"))
                 
