@@ -39,7 +39,12 @@ class UserComponentContainer: BaseComponentContainer<UserViewState> {
     }
 
     @objc func backButtonTapped(button: AnyObject) {
-        self.state.abState = .A
+        switch self.state.abState {
+        case .A:
+            self.state.abState = .B
+        case .B:
+            self.state.abState = .A
+        }
     }
 
     @objc func addButtonTapped(button: AnyObject) {
