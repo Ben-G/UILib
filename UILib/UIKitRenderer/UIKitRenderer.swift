@@ -170,6 +170,9 @@ enum UIKitRenderTree {
 
 protocol UIKitRenderable {
     func renderUIKit() -> UIKitRenderTree
+
+    // Note: Right now it is not possible to return a new view instance from this method. This
+    // new instance would not be inserted into the view hierarchy!
     func updateUIKit(view: UIView, change: Changes, newComponent: UIKitRenderable, renderTree: UIKitRenderTree) -> UIKitRenderTree
 }
 
@@ -200,18 +203,40 @@ extension NavigationBarComponent: UIKitRenderable {
         return .Leaf(self, navigationBar)
     }
 
+    func updateUIKit(view: UIView, change: Changes, newComponent: UIKitRenderable, renderTree: UIKitRenderTree) -> UIKitRenderTree {
+
+        guard let navigationBar = view as? UINavigationBar else { fatalError() }
+        guard let newComponent = newComponent as? NavigationBarComponent else { fatalError() }
+
+        navigationBar.popNavigationItemAnimated(false)
+
+        let navigationItem = UINavigationItem()
+        navigationItem.title = newComponent.title
+
+        if let leftBarButton = newComponent.leftBarButton {
+            navigationItem.leftBarButtonItem = leftBarButton.renderUIKit()
+        }
+
+        if let rightBarButton = newComponent.rightBarButton {
+            navigationItem.rightBarButtonItem = rightBarButton.renderUIKit()
+        }
+
+        navigationBar.pushNavigationItem(navigationItem, animated: false)
+
+        return .Leaf(newComponent, navigationBar)
+    }
 }
 
 extension BarButton {
 
     func renderUIKit() -> UIBarButtonItem {
+
         let barButton = UIBarButtonItem(
-            barButtonSystemItem: .Edit,
+            title: self.title,
+            style: .Plain,
             target: self.onTapTarget,
             action: self.onTapSelector
         )
-
-        barButton.title = self.title
 
         return barButton
     }
