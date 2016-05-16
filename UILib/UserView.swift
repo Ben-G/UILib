@@ -69,12 +69,23 @@ class UserComponentContainer: BaseComponentContainer<UserViewState> {
                     title: "Test Title"
                 )
 
+                let navigationBar2 = NavigationBarComponent(
+                    leftBarButton: nil,
+                    rightBarButton: BarButton(
+                        title: "Edit",
+                        onTapTarget: self,
+                        onTapSelector: #selector(editButtonTapped)
+                    ),
+                    title: "Another One!"
+                )
+
                 let placeholder = VerticalMargin(margin: 20.0, color: Color(hexString: "lightGray"))
                 let mainView = VerticalMargin(margin: 100.0, color: Color(hexString: "lightGray"))
 
                 let stackView = StackComponent(childComponents: [
                     placeholder,
                     navigationBar,
+                    navigationBar2,
                     mainView
                     ], backgroundColor: Color(hexString: "whiteColor"))
                 
