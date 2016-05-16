@@ -20,9 +20,10 @@ extension TableViewModel: UIKitRenderable {
         return .Leaf(self, tableViewRenderer)
     }
 
-    func updateUIKit(view: UIView, change: Changes, newComponent: Component) -> UIKitRenderTree {
+    func updateUIKit(view: UIView, change: Changes, newComponent: UIKitRenderable, renderTree: UIKitRenderTree) -> UIKitRenderTree {
         guard let view = view as? TableViewRenderer else { fatalError() }
         guard let newComponent = newComponent as? TableViewModel else { fatalError() }
+
         // Update view model
         view.tableViewModel = newComponent
 
