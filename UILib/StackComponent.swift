@@ -11,4 +11,18 @@ import Foundation
 struct StackComponent: Component, ContainerComponent {
     let childComponents: [Component]
     let backgroundColor: Color
+    let alignment: Alignment
+
+    init(alignment: Alignment = .Fill, backgroundColor: Color, childComponents: [Component]) {
+        self.alignment = alignment
+        self.backgroundColor = backgroundColor
+        self.childComponents = childComponents
+    }
+
+    enum Alignment {
+        case Fill
+        case Leading
+        case Center
+        case Trailing
+    }
 }

@@ -35,12 +35,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         rootViewController = FullScreenViewController(
             view: renderView.view
         )
-        
-        rootViewController.view.frame = UIScreen.mainScreen().bounds
 
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         self.window?.rootViewController = rootViewController
         self.window?.makeKeyAndVisible()
+
+        rootViewController.view.frame = UIScreen.mainScreen().bounds
 
         return true
     }

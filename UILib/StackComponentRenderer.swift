@@ -8,6 +8,19 @@
 
 import UIKit
 
+private func convertAlignment(alignment: StackComponent.Alignment) -> UIStackViewAlignment {
+    switch alignment {
+    case .Center:
+        return UIStackViewAlignment.Center
+    case .Fill:
+        return UIStackViewAlignment.Fill
+    case .Leading:
+        return UIStackViewAlignment.Leading
+    case .Trailing:
+        return UIStackViewAlignment.Trailing
+    }
+}
+
 extension StackComponent: UIKitRenderable {
 
     func renderUIKit() -> UIKitRenderTree {
@@ -23,6 +36,7 @@ extension StackComponent: UIKitRenderable {
         let stackView = UIStackView(arrangedSubviews: childViews)
         stackView.axis = .Vertical
         stackView.backgroundColor = .whiteColor()
+        stackView.alignment = convertAlignment(self.alignment)
 
         return .Node(self, stackView, children)
     }
@@ -35,6 +49,15 @@ extension StackComponent: UIKitRenderable {
         ) -> UIKitRenderTree {
 
         guard let stackView = view as? UIStackView else { fatalError() }
+        stackView.axis = .Vertical
+        stackView.backgroundColor = .whiteColor()
+
+        let newAlignment = convertAlignment((newComponent as! StackComponent).alignment)
+
+        if newAlignment != stackView.alignment {
+            stackView.alignment = newAlignment
+        }
+
         guard case let .Node(_, _, childTree) = renderTree else { fatalError() }
 
         var children = childTree

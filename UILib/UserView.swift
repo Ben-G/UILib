@@ -82,14 +82,17 @@ class UserComponentContainer: BaseComponentContainer<UserViewState> {
                 let placeholder = VerticalMargin(margin: 20.0, color: Color(hexString: "lightGray"))
                 let mainView = VerticalMargin(margin: 100.0, color: Color(hexString: "lightGray"))
 
-                let stackView = StackComponent(childComponents: [
-                    placeholder,
-                    navigationBar,
-                    navigationBar2,
-                    mainView
-                    ], backgroundColor: Color(hexString: "whiteColor"))
-                
-                return stackView
+                let stackComponent = StackComponent(
+                    backgroundColor: Color(hexString: "whiteColor"),
+                    childComponents: [
+                        placeholder,
+                        navigationBar,
+                        navigationBar2,
+                        mainView
+                    ]
+                )
+
+                return stackComponent
             }()
         case .B:
             return {
@@ -125,12 +128,15 @@ class UserComponentContainer: BaseComponentContainer<UserViewState> {
                     cellTypeDefinitions: cellTypes
                 )
 
-                let stackView = StackComponent(childComponents: [
-                    placeholder,
-                    navigationBar,
-                    tableViewModel
-                    ], backgroundColor: Color(hexString: "whiteColor"))
-                
+                let stackView = StackComponent(
+                    backgroundColor: Color(hexString: "whiteColor"),
+                    childComponents: [
+                        placeholder,
+                        navigationBar,
+                        tableViewModel
+                    ]
+                )
+
                 return stackView
             }()
         }
