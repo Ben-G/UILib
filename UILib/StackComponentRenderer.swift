@@ -12,7 +12,6 @@ extension StackComponent: UIKitRenderable {
 
     func renderUIKit() -> UIKitRenderTree {
         var childViews: [UIView]
-        var childRenderables: [UIKitRenderTree]
 
         let childComponents = self.childComponents.flatMap { $0 as? UIKitRenderable }
         let children = childComponents.map { component in
@@ -74,6 +73,8 @@ extension StackComponent: UIKitRenderable {
             stackView.removeArrangedSubview(remove.view)
             remove.view.removeFromSuperview()
             children.removeAtIndex(remove.index + indexOffset)
+
+            indexOffset -= 1
         }
 
         return .Node(newComponent, stackView, children)
