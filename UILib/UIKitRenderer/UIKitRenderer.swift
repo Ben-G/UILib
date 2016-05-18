@@ -68,20 +68,3 @@ extension UIKitRenderable {
         return .Leaf(self, view)
     }
 }
-
-
-extension BarButton {
-
-    func renderUIKit() -> UIBarButtonItem {
-
-        let barButton = UIBarButtonItem(
-            title: self.title,
-            style: .Plain,
-            target: self.onTapTarget,
-            action: self.onTapSelector
-        )
-
-        return barButton
-    }
-
-}

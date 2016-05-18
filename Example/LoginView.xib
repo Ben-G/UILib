@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="497" height="382"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="iDl-ng-RLO">
+                    <rect key="frame" x="28" y="156" width="441" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="bRE-Vz-OVr"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4tn-Hu-gru">
+                    <rect key="frame" x="28" y="196" width="441" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="wHf-QT-XUi"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yl4-OH-E1w">
+                    <rect key="frame" x="294.5" y="247" width="48" height="30"/>
+                    <state key="normal" title="Signup"/>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P7I-gz-2RC">
+                    <rect key="frame" x="159.5" y="247" width="38" height="30"/>
+                    <state key="normal" title="Login"/>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="4tn-Hu-gru" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="28" id="0qu-sX-Q17"/>
+                <constraint firstItem="P7I-gz-2RC" firstAttribute="top" secondItem="4tn-Hu-gru" secondAttribute="bottom" constant="21" id="2Hd-f0-jis"/>
+                <constraint firstItem="iDl-ng-RLO" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" constant="20" id="3sl-TB-Mdk"/>
+                <constraint firstItem="Yl4-OH-E1w" firstAttribute="top" secondItem="4tn-Hu-gru" secondAttribute="bottom" constant="21" id="Khj-cZ-7l5"/>
+                <constraint firstItem="iDl-ng-RLO" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" constant="-20" id="RyG-Uf-Uo7"/>
+                <constraint firstAttribute="trailing" secondItem="4tn-Hu-gru" secondAttribute="trailing" constant="28" id="Zdc-Gi-BnA"/>
+                <constraint firstItem="4tn-Hu-gru" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" constant="20" id="aBa-VD-Ejn"/>
+                <constraint firstItem="P7I-gz-2RC" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" constant="-70" id="fZv-K0-rcS"/>
+                <constraint firstAttribute="trailingMargin" secondItem="iDl-ng-RLO" secondAttribute="trailing" constant="20" id="h3i-Ct-dxA"/>
+                <constraint firstItem="Yl4-OH-E1w" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" constant="70" id="n91-we-Yan"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="395.5" y="277"/>
+        </view>
+    </objects>
+</document>

@@ -12,11 +12,26 @@ struct StackComponent: Component, ContainerComponent {
     let childComponents: [Component]
     let backgroundColor: Color
     let alignment: Alignment
+    let distribution: Distribution
+    let axis: Axis
 
-    init(alignment: Alignment = .Fill, backgroundColor: Color, childComponents: [Component]) {
+    init(
+        axis: Axis = .Vertical,
+        alignment: Alignment = .Fill,
+        distribution: Distribution = .EqualSpacing,
+        backgroundColor: Color,
+        childComponents: [Component])
+    {
+        self.axis = axis
         self.alignment = alignment
+        self.distribution = distribution
         self.backgroundColor = backgroundColor
         self.childComponents = childComponents
+    }
+
+    enum Axis {
+        case Vertical
+        case Horizontal
     }
 
     enum Alignment {
@@ -24,5 +39,13 @@ struct StackComponent: Component, ContainerComponent {
         case Leading
         case Center
         case Trailing
+    }
+
+    enum Distribution {
+        case Fill
+        case FillEqually
+        case FillProportionally
+        case EqualSpacing
+        case EqualCentering
     }
 }

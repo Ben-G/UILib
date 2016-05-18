@@ -9,7 +9,8 @@
 import UIKit
 
 var userComponent: UserComponentContainer!
-var renderView: RenderView<UserViewState>!
+var loginComponent: LoginComponentContainer!
+var renderView: RenderView<LoginState>!
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,18 +20,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 
-        userComponent = UserComponentContainer(state:
-            UserViewState(
-                abState: .B,
-                users: [
-                    User("OK"),
-                    User("Benji"),
-                    User("Another User")
-                ]
-            )
+//        userComponent = UserComponentContainer(state:
+//            UserViewState(
+//                abState: .B,
+//                users: [
+//                    User("OK"),
+//                    User("Benji"),
+//                    User("Another User")
+//                ]
+//            )
+//        )
+//        
+//        renderView = RenderView(container: userComponent)
+
+        loginComponent = LoginComponentContainer(state:
+            LoginState()
         )
-        
-        renderView = RenderView(container: userComponent)
+
+        renderView = RenderView(container: loginComponent)
 
         rootViewController = FullScreenViewController(
             view: renderView.view

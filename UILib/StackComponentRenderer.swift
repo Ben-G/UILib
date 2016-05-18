@@ -8,19 +8,6 @@
 
 import UIKit
 
-private func convertAlignment(alignment: StackComponent.Alignment) -> UIStackViewAlignment {
-    switch alignment {
-    case .Center:
-        return UIStackViewAlignment.Center
-    case .Fill:
-        return UIStackViewAlignment.Fill
-    case .Leading:
-        return UIStackViewAlignment.Leading
-    case .Trailing:
-        return UIStackViewAlignment.Trailing
-    }
-}
-
 extension StackComponent: UIKitRenderable {
 
     func renderUIKit() -> UIKitRenderTree {
@@ -34,7 +21,7 @@ extension StackComponent: UIKitRenderable {
         childViews = children.map { $0.view }
 
         let stackView = UIStackView(arrangedSubviews: childViews)
-        stackView.axis = .Vertical
+        stackView.axis = convertAxis(self.axis)
         stackView.backgroundColor = .whiteColor()
         stackView.alignment = convertAlignment(self.alignment)
 
@@ -48,11 +35,13 @@ extension StackComponent: UIKitRenderable {
         renderTree: UIKitRenderTree
         ) -> UIKitRenderTree {
 
+        guard let newComponent = newComponent as? StackComponent else { fatalError() }
+
         guard let stackView = view as? UIStackView else { fatalError() }
-        stackView.axis = .Vertical
+        stackView.axis = convertAxis(newComponent.axis)
         stackView.backgroundColor = .whiteColor()
 
-        let newAlignment = convertAlignment((newComponent as! StackComponent).alignment)
+        let newAlignment = convertAlignment(newComponent.alignment)
 
         if newAlignment != stackView.alignment {
             stackView.alignment = newAlignment
@@ -71,7 +60,7 @@ extension StackComponent: UIKitRenderable {
 
                 switch change {
                 case let .Insert(index, _):
-                    let renderTreeEntry = ((newComponent as! ContainerComponent).childComponents[index] as! UIKitRenderable).renderUIKit()
+                    let renderTreeEntry = (newComponent.childComponents[index] as! UIKitRenderable).renderUIKit()
                     viewsToInsert.append((index, renderTreeEntry.view, renderTreeEntry))
                 case let .Remove(index):
                     let childView = children[index].view
@@ -103,4 +92,42 @@ extension StackComponent: UIKitRenderable {
         return .Node(newComponent, stackView, children)
     }
     
+}
+
+
+private func convertAlignment(alignment: StackComponent.Alignment) -> UIStackViewAlignment {
+    switch alignment {
+    case .Center:
+        return UIStackViewAlignment.Center
+    case .Fill:
+        return UIStackViewAlignment.Fill
+    case .Leading:
+        return UIStackViewAlignment.Leading
+    case .Trailing:
+        return UIStackViewAlignment.Trailing
+    }
+}
+
+private func convertDistribution(distribution: StackComponent.Distribution) -> UIStackViewDistribution {
+    switch distribution {
+    case .Fill:
+        return UIStackViewDistribution.Fill
+    case .FillEqually:
+        return UIStackViewDistribution.FillEqually
+    case .FillProportionally:
+        return UIStackViewDistribution.FillProportionally
+    case .EqualSpacing:
+        return UIStackViewDistribution.EqualSpacing
+    case .EqualCentering:
+        return UIStackViewDistribution.EqualCentering
+    }
+}
+
+private func convertAxis(axis: StackComponent.Axis) -> UILayoutConstraintAxis {
+    switch axis {
+    case .Horizontal:
+        return UILayoutConstraintAxis.Horizontal
+    case .Vertical:
+        return UILayoutConstraintAxis.Vertical
+    }
 }
