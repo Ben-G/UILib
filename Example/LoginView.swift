@@ -31,7 +31,8 @@ class LoginComponentContainer: BaseComponentContainer<LoginState> {
     }
 
     @objc func login() {
-
+        self.state.usernameValid = false
+        self.state.passwordValid = false
     }
 
     @objc func signup() {
@@ -40,42 +41,46 @@ class LoginComponentContainer: BaseComponentContainer<LoginState> {
 
     override func render(state: LoginState) -> ContainerComponent {
 
-
-
-        return StackComponent(
-            distribution: .EqualSpacing,
-            backgroundColor: Color(hexString: ""),
-            childComponents: [
-                TextInput(
-                    text: state.username,
-                    placeholderText: "Username",
-                    backgroundColor: state.passwordValid ? .whiteColor() : .redColor()
-                ),
-                TextInput(
-                    text: state.password,
-                    placeholderText: "Password",
-                    backgroundColor: state.passwordValid ? .whiteColor() : .redColor()
-                ),
+        return CenterComponent(
+            width: 200,
+            height: 200,
+            component:
                 StackComponent(
                     distribution: .FillEqually,
-                    axis: .Horizontal,
                     backgroundColor: Color(hexString: ""),
                     childComponents: [
-                        Button(
-                            title: "Login",
-                            target: self,
-                            selector: #selector(login)
+                        TextInput(
+                            text: state.username,
+                            placeholderText: "Username",
+                            backgroundColor: state.usernameValid
+                                ? Color(hexString: "#FFFFFF") : Color(hexString: "#FF0000")
                         ),
-                        Button(
-                            title: "Signup",
-                            target: self,
-                            selector: #selector(signup)
+                        TextInput(
+                            text: state.password,
+                            placeholderText: "Password",
+                            backgroundColor: state.usernameValid
+                                ? Color(hexString: "#FFFFFF") : Color(hexString: "#FF0000")
+                        ),
+                        StackComponent(
+                            distribution: .FillEqually,
+                            axis: .Horizontal,
+                            backgroundColor: Color(hexString: ""),
+                            childComponents: [
+                                Button(
+                                    title: "Login",
+                                    target: self,
+                                    selector: #selector(login)
+                                ),
+                                Button(
+                                    title: "Signup",
+                                    target: self,
+                                    selector: #selector(signup)
+                                )
+                            ]
                         )
                     ]
                 )
-            ]
         )
-
     }
 
 }

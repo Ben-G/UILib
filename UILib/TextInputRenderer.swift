@@ -14,7 +14,9 @@ extension TextInput: UIKitRenderable {
         let textField = UITextField()
         textField.text = self.text
         textField.placeholder = self.placeholderText
-        textField.backgroundColor = self.backgroundColor
+        textField.backgroundColor = UIColor(
+            rgba: self.backgroundColor.hexString
+        )
 
         return .Leaf(self, textField)
     }
@@ -30,8 +32,10 @@ extension TextInput: UIKitRenderable {
 
         textField.text = newComponent.text
         textField.placeholder = newComponent.placeholderText
-        textField.backgroundColor = newComponent.backgroundColor
-
+        textField.backgroundColor = UIColor(
+            rgba: self.backgroundColor.hexString
+        )
+        
         return .Leaf(newComponent, textField)
     }
 

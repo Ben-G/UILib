@@ -30,6 +30,9 @@
 		2550A8921CEC2F8D004EA96E /* TextInputRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2550A8911CEC2F8D004EA96E /* TextInputRenderer.swift */; };
 		2550A8941CEC3727004EA96E /* BarButtonRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2550A8931CEC3727004EA96E /* BarButtonRenderer.swift */; };
 		2550A8961CEC373B004EA96E /* ButtonRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2550A8951CEC373B004EA96E /* ButtonRenderer.swift */; };
+		2550A8A11CED3818004EA96E /* CenterComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2550A8A01CED3817004EA96E /* CenterComponent.swift */; };
+		2550A8A31CED3869004EA96E /* CenterComponentRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2550A8A21CED3869004EA96E /* CenterComponentRenderer.swift */; };
+		2550A8A51CED59AE004EA96E /* UIColorHex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2550A8A41CED59AE004EA96E /* UIColorHex.swift */; };
 		259F7E7E1CD9782D00A3FFD9 /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259F7E7D1CD9782D00A3FFD9 /* UserView.swift */; };
 		25A75D641CE4D95F0086A82F /* VerticalMargin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A75D631CE4D95F0086A82F /* VerticalMargin.swift */; };
 		25CE2A641CD42B37006BD375 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CE2A631CD42B37006BD375 /* AppDelegate.swift */; };
@@ -65,6 +68,9 @@
 		2550A8911CEC2F8D004EA96E /* TextInputRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextInputRenderer.swift; sourceTree = "<group>"; };
 		2550A8931CEC3727004EA96E /* BarButtonRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarButtonRenderer.swift; sourceTree = "<group>"; };
 		2550A8951CEC373B004EA96E /* ButtonRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonRenderer.swift; sourceTree = "<group>"; };
+		2550A8A01CED3817004EA96E /* CenterComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CenterComponent.swift; sourceTree = "<group>"; };
+		2550A8A21CED3869004EA96E /* CenterComponentRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CenterComponentRenderer.swift; sourceTree = "<group>"; };
+		2550A8A41CED59AE004EA96E /* UIColorHex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorHex.swift; sourceTree = "<group>"; };
 		259F7E7D1CD9782D00A3FFD9 /* UserView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserView.swift; path = UILib/UserView.swift; sourceTree = "<group>"; };
 		25A75D631CE4D95F0086A82F /* VerticalMargin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerticalMargin.swift; sourceTree = "<group>"; };
 		25CE2A601CD42B37006BD375 /* UILib.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UILib.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -122,6 +128,8 @@
 				2550A8911CEC2F8D004EA96E /* TextInputRenderer.swift */,
 				2550A8931CEC3727004EA96E /* BarButtonRenderer.swift */,
 				2550A8951CEC373B004EA96E /* ButtonRenderer.swift */,
+				2550A8A21CED3869004EA96E /* CenterComponentRenderer.swift */,
+				2550A8A41CED59AE004EA96E /* UIColorHex.swift */,
 			);
 			name = UIKitRenderer;
 			sourceTree = "<group>";
@@ -136,6 +144,7 @@
 				2550A8471CEA1FEA004EA96E /* BarButtonComponent.swift */,
 				2550A8491CEA1FF7004EA96E /* Button.swift */,
 				2550A88F1CEC2F67004EA96E /* TextInput.swift */,
+				2550A8A01CED3817004EA96E /* CenterComponent.swift */,
 			);
 			name = Components;
 			sourceTree = "<group>";
@@ -303,6 +312,7 @@
 				2550A8481CEA1FEA004EA96E /* BarButtonComponent.swift in Sources */,
 				25CE2A7D1CD42B99006BD375 /* TableViewDataSourceDelegate.swift in Sources */,
 				2550A84E1CEA20BB004EA96E /* ContainerTreeDiffer.swift in Sources */,
+				2550A8A11CED3818004EA96E /* CenterComponent.swift in Sources */,
 				2550A88E1CEC2F0C004EA96E /* LoginView.swift in Sources */,
 				2550A8441CEA1FC4004EA96E /* StackComponent.swift in Sources */,
 				2550A8041CE598C1004EA96E /* Component.swift in Sources */,
@@ -313,6 +323,7 @@
 				2550A8901CEC2F67004EA96E /* TextInput.swift in Sources */,
 				25CE2A641CD42B37006BD375 /* AppDelegate.swift in Sources */,
 				2550A8501CEA20F2004EA96E /* StackComponentRenderer.swift in Sources */,
+				2550A8A31CED3869004EA96E /* CenterComponentRenderer.swift in Sources */,
 				2550A8521CEA214D004EA96E /* NavigationBarComponentRenderer.swift in Sources */,
 				2550A83B1CE82D22004EA96E /* Dwifft.swift in Sources */,
 				2550A8921CEC2F8D004EA96E /* TextInputRenderer.swift in Sources */,
@@ -322,6 +333,7 @@
 				2550A8461CEA1FDA004EA96E /* NavigationBarComponent.swift in Sources */,
 				2550A8091CE59E42004EA96E /* UIKitRenderer.swift in Sources */,
 				2550A8541CEA21D0004EA96E /* UIKitReconciler.swift in Sources */,
+				2550A8A51CED59AE004EA96E /* UIColorHex.swift in Sources */,
 				2550A8941CEC3727004EA96E /* BarButtonRenderer.swift in Sources */,
 				2550A8961CEC373B004EA96E /* ButtonRenderer.swift in Sources */,
 				25A75D641CE4D95F0086A82F /* VerticalMargin.swift in Sources */,

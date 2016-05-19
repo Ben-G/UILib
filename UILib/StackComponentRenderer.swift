@@ -24,6 +24,7 @@ extension StackComponent: UIKitRenderable {
         stackView.axis = convertAxis(self.axis)
         stackView.backgroundColor = .whiteColor()
         stackView.alignment = convertAlignment(self.alignment)
+        stackView.distribution = convertDistribution(self.distribution)
 
         return .Node(self, stackView, children)
     }
@@ -46,6 +47,8 @@ extension StackComponent: UIKitRenderable {
         if newAlignment != stackView.alignment {
             stackView.alignment = newAlignment
         }
+
+        stackView.distribution = convertDistribution(newComponent.distribution)
 
         guard case let .Node(_, _, childTree) = renderTree else { fatalError() }
 

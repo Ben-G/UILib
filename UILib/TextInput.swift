@@ -6,10 +6,10 @@
 //  Copyright © 2016 Benjamin Encz. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 struct TextInput: Component {
     let text: String
     let placeholderText: String
-    let backgroundColor: UIColor
+    let backgroundColor: Color
 }
