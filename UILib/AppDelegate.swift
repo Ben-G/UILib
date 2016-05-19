@@ -8,15 +8,12 @@
 
 import UIKit
 
-var userComponent: UserComponentContainer!
-var loginComponent: LoginComponentContainer!
-var renderView: RenderView<LoginState>!
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var rootViewController: UIViewController!
+    var router: Router!
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 
@@ -54,4 +51,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
+enum Route {
+    case LoginSignup
+    case List
+}
 
+class Router {
+    let rootViewController: UIViewController
+    var route: Route
+
+    var userComponent: UserComponentContainer!
+    var loginComponent: LoginComponentContainer!
+    var renderView: RenderView<LoginState>!
+
+    init(rootViewController: UIViewController, initialRoute: Route) {
+        self.rootViewController = rootViewController
+        self.route = initialRoute
+    }
+
+    func applyCurrentRoute() {
+        self.rootViewController
+    }
+}
