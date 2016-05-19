@@ -10,7 +10,15 @@ import UIKit
 
 class FullScreenViewController: UIViewController {
 
-    let contentView: UIView
+    var contentView: UIView {
+        didSet {
+            oldValue.removeFromSuperview()
+
+            self.view.addSubview(self.contentView)
+            self.contentView.frame = self.view.bounds
+            self.contentView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        }
+    }
 
     init(view: UIView) {
         self.contentView = view

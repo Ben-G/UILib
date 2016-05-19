@@ -12,39 +12,17 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    var rootViewController: UIViewController!
     var router: Router!
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 
-//        userComponent = UserComponentContainer(state:
-//            UserViewState(
-//                abState: .B,
-//                users: [
-//                    User("OK"),
-//                    User("Benji"),
-//                    User("Another User")
-//                ]
-//            )
-//        )
-//        
-//        renderView = RenderView(container: userComponent)
-
-        loginComponent = LoginComponentContainer(state:
-            LoginState()
-        )
-
-        renderView = RenderView(container: loginComponent)
-
-        rootViewController = FullScreenViewController(
-            view: renderView.view
-        )
+        router = Router(initialRoute: .LoginSignup)
 
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
-        self.window?.rootViewController = rootViewController
+        self.window?.rootViewController = router.rootViewController
         self.window?.makeKeyAndVisible()
 
-        rootViewController.view.frame = UIScreen.mainScreen().bounds
+        router.rootViewController.view.frame = UIScreen.mainScreen().bounds
 
         return true
     }
@@ -57,19 +35,49 @@ enum Route {
 }
 
 class Router {
-    let rootViewController: UIViewController
     var route: Route
 
-    var userComponent: UserComponentContainer!
+    var userComponent: UserComponentContainer
     var loginComponent: LoginComponentContainer!
-    var renderView: RenderView<LoginState>!
+    var renderView: RenderView!
+    var rootViewController: FullScreenViewController!
 
-    init(rootViewController: UIViewController, initialRoute: Route) {
-        self.rootViewController = rootViewController
+    init(initialRoute: Route) {
         self.route = initialRoute
+
+        self.userComponent = UserComponentContainer(state:
+                    UserViewState(
+                        abState: .B,
+                        users: [
+                            User("OK"),
+                            User("Benji"),
+                            User("Another User")
+                        ]
+                    )
+                )
+
+        self.loginComponent = LoginComponentContainer(state: LoginState(), router: self)
+        self._applyCurrentRoute()
     }
 
-    func applyCurrentRoute() {
-        self.rootViewController
+    func _applyCurrentRoute() {
+        switch self.route {
+        case .LoginSignup:
+            self.renderView = RenderView(container: loginComponent)
+        case .List:
+            self.renderView = RenderView(container: userComponent)
+        }
+
+        if self.rootViewController == nil {
+            self.rootViewController = FullScreenViewController(view: self.renderView.view)
+        } else {
+            self.rootViewController.contentView = self.renderView.view
+        }
     }
+
+    func switchRoute(route: Route) {
+        self.route = route
+        self._applyCurrentRoute()
+    }
+
 }

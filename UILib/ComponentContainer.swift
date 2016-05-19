@@ -12,7 +12,11 @@ protocol Renderer: class {
     func renderComponent(component: ContainerComponent, animated: Bool)
 }
 
-class BaseComponentContainer<State> {
+protocol ComponentContainer {
+    weak var renderer: Renderer? { get set }
+}
+
+class BaseComponentContainer<State>: ComponentContainer {
 
     weak var renderer: Renderer? {
         didSet {

@@ -18,7 +18,7 @@ struct StackComponent: Component, ContainerComponent {
     init(
         axis: Axis = .Vertical,
         alignment: Alignment = .Fill,
-        distribution: Distribution = .EqualSpacing,
+        distribution: Distribution = .Fill,
         backgroundColor: Color,
         childComponents: [Component])
     {

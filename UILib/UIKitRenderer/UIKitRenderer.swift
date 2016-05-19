@@ -8,15 +8,17 @@
 
 import UIKit
 
-final class RenderView<T>: Renderer {
+final class RenderView: Renderer {
 
     var view = UIView()
-    var container: BaseComponentContainer<T>
+    var container: ComponentContainer
 
     var lastRootComponent: ContainerComponent?
     var lastRenderTree: UIKitRenderTree?
 
-    init(container: BaseComponentContainer<T>) {
+    init(container: ComponentContainer) {
+        var container = container
+
         self.container = container
         container.renderer = self
     }

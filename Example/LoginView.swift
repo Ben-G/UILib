@@ -27,7 +27,11 @@ struct LoginState {
 
 class LoginComponentContainer: BaseComponentContainer<LoginState> {
 
-    override init(state: LoginState) {
+    weak var router: Router?
+
+    init(state: LoginState, router: Router) {
+        self.router = router
+
         super.init(state: state)
     }
 
@@ -42,6 +46,8 @@ class LoginComponentContainer: BaseComponentContainer<LoginState> {
         self.updateAnimated {
             self.state.loginRequestState = .Loading
         }
+
+        self.router?.switchRoute(.List)
     }
 
     @objc func usernameChanged(newValue: UITextField) {
