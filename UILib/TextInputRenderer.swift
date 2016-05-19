@@ -18,6 +18,12 @@ extension TextInput: UIKitRenderable {
             rgba: self.backgroundColor.hexString
         )
 
+        textField.addTarget(
+            self.onChangedTarget,
+            action: self.onChangedSelector,
+            forControlEvents: .EditingChanged
+        )
+
         return .Leaf(self, textField)
     }
 

@@ -12,4 +12,6 @@ struct TextInput: Component {
     let text: String
     let placeholderText: String
     let backgroundColor: Color
+    let onChangedTarget: AnyObject
+    let onChangedSelector: Selector
 }

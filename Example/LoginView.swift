@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 enum LoginRequestState {
     case None
@@ -31,19 +32,43 @@ class LoginComponentContainer: BaseComponentContainer<LoginState> {
     }
 
     @objc func login() {
-        self.state.usernameValid = false
-        self.state.passwordValid = false
+        self.updateAnimated {
+            self.state.usernameValid = false
+            self.state.passwordValid = false
+        }
     }
 
     @objc func signup() {
+        self.updateAnimated {
+            self.state.loginRequestState = .Loading
+        }
+    }
 
+    @objc func usernameChanged(newValue: UITextField) {
+        self.updateNoRender {
+            self.state.username = newValue.text ?? ""
+        }
+    }
+
+    @objc func passwordChanged(newValue: UITextField) {
+        self.updateNoRender {
+            self.state.password = newValue.text ?? ""
+        }
     }
 
     override func render(state: LoginState) -> ContainerComponent {
+        let (width, height) = { () -> (Float, Float) in
+            switch state.loginRequestState {
+            case .Loading:
+                return (0.0, 0.0)
+            default:
+                return (200.0, 200.0)
+            }
+        }()
 
         return CenterComponent(
-            width: 200,
-            height: 200,
+            width: width,
+            height: height,
             component:
                 StackComponent(
                     distribution: .FillEqually,
@@ -53,13 +78,17 @@ class LoginComponentContainer: BaseComponentContainer<LoginState> {
                             text: state.username,
                             placeholderText: "Username",
                             backgroundColor: state.usernameValid
-                                ? Color(hexString: "#FFFFFF") : Color(hexString: "#FF0000")
+                                ? Color(hexString: "#FFFFFF") : Color(hexString: "#FF0000"),
+                            onChangedTarget: self,
+                            onChangedSelector: #selector(usernameChanged)
                         ),
                         TextInput(
                             text: state.password,
                             placeholderText: "Password",
                             backgroundColor: state.usernameValid
-                                ? Color(hexString: "#FFFFFF") : Color(hexString: "#FF0000")
+                                ? Color(hexString: "#FFFFFF") : Color(hexString: "#FF0000"),
+                            onChangedTarget: self,
+                            onChangedSelector: #selector(passwordChanged)
                         ),
                         StackComponent(
                             distribution: .FillEqually,

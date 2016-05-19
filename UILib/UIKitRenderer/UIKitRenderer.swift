@@ -21,7 +21,7 @@ final class RenderView<T>: Renderer {
         container.renderer = self
     }
 
-    func renderComponent(component: ContainerComponent) {
+    func renderComponent(component: ContainerComponent, animated: Bool) {
         defer {
             self.lastRootComponent = component
         }
@@ -30,11 +30,20 @@ final class RenderView<T>: Renderer {
             // Reconciled rendering
             let reconcilerResults = diffChanges(lastRootComponent, newTree: component)
 
-            self.lastRenderTree = applyReconcilation(
-                lastRenderTree,
-                changeSet: reconcilerResults,
-                newComponent: component as! UIKitRenderable
-            )
+            let updates: () -> UIKitRenderTree = {
+                applyReconcilation(
+                    lastRenderTree,
+                    changeSet: reconcilerResults,
+                    newComponent: component as! UIKitRenderable
+                )
+            }
+            if animated {
+                UIView.animateWithDuration(0.3) {
+                    self.lastRenderTree = updates()
+                }
+            } else {
+                self.lastRenderTree = updates()
+            }
         } else {
             // Full render pass
             if let renderTree = (component as? UIKitRenderable)?.renderUIKit() {

@@ -18,7 +18,7 @@ extension CenterComponent: UIKitRenderable {
         let subview = renderTree.view
         view.addSubview(subview)
 
-        subview.frame = view.bounds
+        subview.bounds = view.bounds
         subview.center = view.center
         subview.autoresizingMask = [
             .FlexibleTopMargin,
@@ -41,6 +41,10 @@ extension CenterComponent: UIKitRenderable {
         renderTree: UIKitRenderTree) -> UIKitRenderTree
     {
         guard case let .Node(_, _, childTree) = renderTree else { fatalError() }
+        guard let newComponent = newComponent as? CenterComponent else { fatalError() }
+
+        childTree[0].view.bounds = CGRectMake(0, 0, CGFloat(newComponent.width), CGFloat(newComponent.height))
+        childTree[0].view.center = view.center
 
         return .Node(self, view, childTree)
     }
