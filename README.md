@@ -19,6 +19,8 @@ new one and update the UIKit representation automatically. This allows developer
 
 Here's an example of a `ComponentContainer` for a login view:
 
+(TODO: Replace with much simpler example!)
+
 ```swift
 enum LoginRequestState {
     case None
