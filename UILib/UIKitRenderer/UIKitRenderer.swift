@@ -8,6 +8,7 @@
 
 import UIKit
 
+/// A view that can render a `ContainerComponent`
 final class RenderView: Renderer {
 
     var view = UIView()
@@ -25,13 +26,17 @@ final class RenderView: Renderer {
 
     func renderComponent(component: ContainerComponent, animated: Bool) {
         defer {
+            // When leaving this function, store the new component
+            // as the `lastRootComponent`.
             self.lastRootComponent = component
         }
 
+        // If we have an existing root component, calculate diffs instead of rendering from scratch
         if let lastRootComponent = self.lastRootComponent, lastRenderTree = lastRenderTree {
-            // Reconciled rendering
+            // Calculate the difference between old and new component tree
             let reconcilerResults = diffChanges(lastRootComponent, newTree: component)
 
+            // Wrap the UIKit updates into a closure
             let updates: () -> UIKitRenderTree = {
                 applyReconcilation(
                     lastRenderTree,
@@ -39,6 +44,8 @@ final class RenderView: Renderer {
                     newComponent: component as! UIKitRenderable
                 )
             }
+
+            // Decide wheter or not to perform the updates animated
             if animated {
                 UIView.animateWithDuration(0.3) {
                     self.lastRenderTree = updates()
@@ -47,7 +54,7 @@ final class RenderView: Renderer {
                 self.lastRenderTree = updates()
             }
         } else {
-            // Full render pass
+            // Perform a full render pass
             if let renderTree = (component as? UIKitRenderable)?.renderUIKit() {
                 self.view.subviews.forEach {
                     $0.removeFromSuperview()

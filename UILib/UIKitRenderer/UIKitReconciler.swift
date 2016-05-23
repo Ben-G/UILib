@@ -8,6 +8,8 @@
 
 import UIKit
 
+/// Describes the current tree of rendered components. Holds onto the cached UIViews and their
+/// respective components.
 enum UIKitRenderTree {
     indirect case Node(UIKitRenderable, UIView, [UIKitRenderTree])
     case Leaf(UIKitRenderable, UIView)
@@ -31,14 +33,22 @@ enum UIKitRenderTree {
     }
 }
 
+/// Describes changes dervided from diffing two component trees.
 enum Changes{
+    /// Describes an insertion of a new component
     case Insert(index: Int, identifier: String)
+    /// Describes the removal of an existing component
     case Remove(index: Int)
+    /// Describes the update of a simple component (not container component)
     case Update
+    /// Describes that no changes occured
     case None
+    /// Describes the changes that occurred to children of a container component
+    // TODO: currently we can't describe changes to the conainer component itself.
     indirect case Root([Changes])
 }
 
+/// Applies the changes derived from diffing to an existing render tree.
 func applyReconcilation(
     renderTree: UIKitRenderTree,
     changeSet: Changes,
@@ -47,34 +57,64 @@ func applyReconcilation(
     var newRenderTree: UIKitRenderTree?
 
     switch (changeSet, renderTree) {
+    // When we find a root change on a node, we update the node itself and all of its children.
     case let (.Root(changes), .Node(_, _, oldChildTree)):
-        // Apply change to root
-        newRenderTree = renderTree.renderable.updateUIKit(renderTree.view, change: changeSet, newComponent: newComponent, renderTree: renderTree)
+        // When we find a root change on a node of the render tree, call it's update `UIKit` method
+        // by passing in the change. Store the result as the `newRenderTree`.
+        newRenderTree = renderTree.renderable.updateUIKit(
+            // Pass the cached view from the old render tree
+            renderTree.view,
+            // Pass the root change we just found
+            change: changeSet,
+            // Pass in the new component which will be used for updates
+            newComponent: newComponent,
+            // pass in the entire cached render tree
+            renderTree: renderTree
+        )
 
+        // Make a mutable copy of the old child tree to generate the new child tree.
+        // We got this child tree from the current node of the cached renter tree.
         var newChildTree = oldChildTree
 
+        // If the root of the new render tree is a node apply changes from the `.Root` change set to
+        // its children.
         if case let .Node(renderable, view, childTree) = newRenderTree! {
+            // The `childTree` of the `newRenderTree` is going to be used as base of our new child tree
             newChildTree = childTree
 
             for (index, change) in changes.enumerate() {
                 if case .Update = change {
-                    // Only updates should be applied to children directly
+                    // Update each child view by pasing in the cached view, the change, the new component and 
+                    // the cached render tree.
                     let component = (newComponent as! ContainerComponent).childComponents[index] as! UIKitRenderable
                     let recycledView = childTree[index].view
-                    newChildTree[index] = childTree[index].renderable.updateUIKit(recycledView, change: change, newComponent: component, renderTree: renderTree)
+
+                    newChildTree[index] = childTree[index].renderable.updateUIKit(
+                        recycledView,
+                        change: change,
+                        newComponent: component,
+                        renderTree: renderTree
+                    )
                 }
 
                 if case .Root = change {
+                    // For root changes, call `applyReconciliation` recursively with the according child component
                     let component = (newComponent as! ContainerComponent).childComponents[index] as! UIKitRenderable
                     newChildTree[index] = applyReconcilation(childTree[index], changeSet: change, newComponent: component)
                 }
             }
 
+            // Update the `newRenderTree` with the changes we got from updating all children
             newRenderTree = .Node(renderable, view, newChildTree)
         }
-    case let (.Root(changes), .Leaf(renderable, view)):
-        // Apply change to root
-        newRenderTree = renderTree.renderable.updateUIKit(renderTree.view, change: changeSet, newComponent: newComponent, renderTree: renderTree)
+    // When we find a root change on a leaf, we only need to update the leaf itself.
+    case (.Root, .Leaf):
+        newRenderTree = renderTree.renderable.updateUIKit(
+            renderTree.view,
+            change: changeSet,
+            newComponent: newComponent,
+            renderTree: renderTree
+        )
     default:
         break
     }

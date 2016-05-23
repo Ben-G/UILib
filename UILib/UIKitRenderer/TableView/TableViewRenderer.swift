@@ -31,7 +31,7 @@ extension TableViewModel: UIKitRenderable {
             // need to check which sections / rows are affected
             for (sectionIndex, change) in changes.enumerate() {
                 if case let .Root(changes) = change {
-                    for (rowIndex, change) in changes.enumerate() {
+                    for (_, change) in changes.enumerate() {
                         switch change {
                         case let .Remove(row):
                             view.tableView.deleteRowsAtIndexPaths(
