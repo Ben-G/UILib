@@ -162,6 +162,18 @@ The calculated changes from the diffing algorithm  can either be an `Insert`, `D
 
 Currently all plain components (buttons, text fields, etc.) will be updated on each render pass; in a future improvement the library will check if a specific view component's state changed or not before updating it.
 
+##Component Tree, Render Tree and Changeset Tree
+
+*Note: The notes in this section are not polished and mostly ment for myself; so don't worry if you don't understand them!*
+
+UILib uses three different trees in order to perform diffing on component trees and delta updates on UIKit components. The component tree is emmited from the `render` function and contains all components that participate in diffing. UILib will use this tree to calculate changes in a diffing function. From these changes it will generate a changeset tree. The changeset tree describes different types of changes that can be applied to container components or individual components. The `.Root, `.Delete` and `.Insert` changes are only applicable to container components, as they influence how their child components are updated.
+
+When applying the changes to an existing view hierarchy, we traverse the changeset tree and the render tree in parallel to find the relevant components to which changes need to be applied.
+
+The render tree is separate from the component tree. The render tree stores components and their view representations side-by-side. The render tree consists of `.Nodes` and `.Leafs`. The distinction is imporant for understanding how changes are applied to parts of the render tree. When `.Nodes` receive `.Root` changes, they update their children tree by performing insertions & deletions, but they are **not responsible for updating the children that are not removed/added**. Since they are `.Nodes`, their children have their own representation in the render tree; UILib will pass their relevant changes to the children separately. 
+
+`.Leafs` on the other hand mark the end of the render tree. None of their potentially existing child components have a representation in the render tree; therefore they cannot be updated automatically. When `.Leafs` receive `.Root` changes, they are responsible for updating themselves **and all of their child components**. A current example for a container component that acts as a leaf in the render tree is the Table View. The Table View needs to update its children manually, since UILib should not interfere with the way updates work within `UITableViews`. If each of the child components of the table view would also be represented in the render tree; the deletion of a `UITableViewCell` would be the responsibility of its parent component, a `UITableViewSection`. However, in UIKit it is not possible for a section to delete a cell; such kind of changes have to happen through the table view's data source and delegate and these are maintained by the table view component. By acting as a `.Leaf` the table view can opt out of the automatic container changes and can receive all changes for any of the components below it in the component tree.
+
 ###Animated State Changes
 
 UILib supports a very naive way of rendering state changes. When mutating the state in a component container the update can be wrapped in a `updateAnimated` block:
