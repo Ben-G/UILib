@@ -47,7 +47,6 @@ class Router {
 
         self.userComponent = UserComponentContainer(state:
                     UserViewState(
-                        abState: .B,
                         users: [
                             User("OK"),
                             User("Benji"),
