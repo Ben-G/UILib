@@ -29,6 +29,8 @@ func diffChanges(oldTree: ContainerComponent, newTree: ContainerComponent) -> Ch
     let diff = oldTree.childComponents.map{ $0.componentIdentifier }
         .diff(newTree.childComponents.map { $0.componentIdentifier })
 
+    var insertedIndexes: [Int] = []
+    var removedIndexes: [Int] = []
 
     // Iterate over all changes we found while diffing
     diff.results.forEach { diffStep in
@@ -36,11 +38,13 @@ func diffChanges(oldTree: ContainerComponent, newTree: ContainerComponent) -> Ch
         case let .Insert(index, identifier):
             // If we detect insertions, simply append these two our change list
             changes.append(.Insert(index: index, identifier: identifier))
+            insertedIndexes.append(index)
         case let .Delete(index, _):
             // If we detect deletes, place them at the child component index that is about
             // to be deleted. This will override the default value we inserted earlier for 
             // this component.
             changes[index] = .Remove(index: index)
+            removedIndexes.append(index)
         }
     }
 
@@ -51,6 +55,15 @@ func diffChanges(oldTree: ContainerComponent, newTree: ContainerComponent) -> Ch
         // are either being removed from the tree or are entirely new.
         guard case .None = changes[index] else { continue }
 
+        // Calculate mapping between index in new and old tree by counting insertions and
+        // deletions that affect the current index
+        let newComponentOffset: Int = {
+            let insertOffsets = insertedIndexes.filter { $0 <= index }.count
+            let removeOffsets = removedIndexes.filter { $0 < index }.count
+
+            return insertOffsets - removeOffsets
+        }()
+
         // In this step we only care about container components
         if let container = component as? ContainerComponent {
             // Recursively reconcile this child component.
@@ -59,7 +72,7 @@ func diffChanges(oldTree: ContainerComponent, newTree: ContainerComponent) -> Ch
             // diffing step.
             changes[index] = diffChanges(
                 container,
-                newTree: newTree.childComponents[index] as! ContainerComponent
+                newTree: newTree.childComponents[index + newComponentOffset] as! ContainerComponent
             )
         }
     }

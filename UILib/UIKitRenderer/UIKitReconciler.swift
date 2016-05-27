@@ -82,7 +82,31 @@ func applyReconcilation(
             // The `childTree` of the `newRenderTree` is going to be used as base of our new child tree
             newChildTree = childTree
 
+            var removedIndexes: [Int] = []
+            var insertedIndexes: [Int] = []
+
             for (index, change) in changes.enumerate() {
+                if case .Remove = change {
+                    removedIndexes.append(index)
+                    continue
+                }
+
+                if case .Insert = change {
+                    insertedIndexes.append(index)
+                    continue
+                }
+
+                // Calculate mapping between index in new and old tree by counting insertions and
+                // deletions that affect the current index
+                let newComponentOffset: Int = {
+                    let insertOffsets = insertedIndexes.filter { $0 <= index }.count
+                    let removeOffsets = removedIndexes.filter { $0 < index }.count
+
+                    return insertOffsets - removeOffsets
+                }()
+
+                let index = index + newComponentOffset
+
                 if case .Update = change {
                     // Update each child view by pasing in the cached view, the change, the new component and 
                     // the cached render tree.

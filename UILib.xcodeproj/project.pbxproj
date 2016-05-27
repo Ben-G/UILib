@@ -33,6 +33,8 @@
 		2550A8A11CED3818004EA96E /* CenterComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2550A8A01CED3817004EA96E /* CenterComponent.swift */; };
 		2550A8A31CED3869004EA96E /* CenterComponentRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2550A8A21CED3869004EA96E /* CenterComponentRenderer.swift */; };
 		2550A8A51CED59AE004EA96E /* UIColorHex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2550A8A41CED59AE004EA96E /* UIColorHex.swift */; };
+		2550A91E1CF72EF1004EA96E /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2550A91D1CF72EF1004EA96E /* Label.swift */; };
+		2550A9201CF72F1A004EA96E /* LabelRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2550A91F1CF72F1A004EA96E /* LabelRenderer.swift */; };
 		259F7E7E1CD9782D00A3FFD9 /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259F7E7D1CD9782D00A3FFD9 /* UserView.swift */; };
 		25A75D641CE4D95F0086A82F /* VerticalMargin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A75D631CE4D95F0086A82F /* VerticalMargin.swift */; };
 		25CE2A641CD42B37006BD375 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CE2A631CD42B37006BD375 /* AppDelegate.swift */; };
@@ -71,6 +73,8 @@
 		2550A8A01CED3817004EA96E /* CenterComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CenterComponent.swift; sourceTree = "<group>"; };
 		2550A8A21CED3869004EA96E /* CenterComponentRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CenterComponentRenderer.swift; sourceTree = "<group>"; };
 		2550A8A41CED59AE004EA96E /* UIColorHex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorHex.swift; sourceTree = "<group>"; };
+		2550A91D1CF72EF1004EA96E /* Label.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
+		2550A91F1CF72F1A004EA96E /* LabelRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelRenderer.swift; sourceTree = "<group>"; };
 		259F7E7D1CD9782D00A3FFD9 /* UserView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserView.swift; sourceTree = "<group>"; };
 		25A75D631CE4D95F0086A82F /* VerticalMargin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerticalMargin.swift; sourceTree = "<group>"; };
 		25CE2A601CD42B37006BD375 /* UILib.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UILib.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -130,6 +134,7 @@
 				2550A8A41CED59AE004EA96E /* UIColorHex.swift */,
 				2550A8531CEA21D0004EA96E /* UIKitReconciler.swift */,
 				2550A8081CE59E42004EA96E /* UIKitRenderer.swift */,
+				2550A91F1CF72F1A004EA96E /* LabelRenderer.swift */,
 			);
 			path = UIKitRenderer;
 			sourceTree = "<group>";
@@ -145,6 +150,7 @@
 				2550A8451CEA1FDA004EA96E /* NavigationBarComponent.swift */,
 				2550A8431CEA1FC4004EA96E /* StackComponent.swift */,
 				2550A88F1CEC2F67004EA96E /* TextInput.swift */,
+				2550A91D1CF72EF1004EA96E /* Label.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -308,10 +314,12 @@
 			files = (
 				2550A8391CE7EE34004EA96E /* ComponentContainer.swift in Sources */,
 				252D25001CDA4A2A008D517F /* UserCell.swift in Sources */,
+				2550A9201CF72F1A004EA96E /* LabelRenderer.swift in Sources */,
 				25CE2A771CD42B5D006BD375 /* TableViewModel.swift in Sources */,
 				2550A8481CEA1FEA004EA96E /* BarButtonComponent.swift in Sources */,
 				25CE2A7D1CD42B99006BD375 /* TableViewDataSourceDelegate.swift in Sources */,
 				2550A84E1CEA20BB004EA96E /* ContainerTreeDiffer.swift in Sources */,
+				2550A91E1CF72EF1004EA96E /* Label.swift in Sources */,
 				2550A8A11CED3818004EA96E /* CenterComponent.swift in Sources */,
 				2550A88E1CEC2F0C004EA96E /* LoginView.swift in Sources */,
 				2550A8441CEA1FC4004EA96E /* StackComponent.swift in Sources */,

@@ -36,9 +36,16 @@ class LoginComponentContainer: BaseComponentContainer<LoginState> {
     }
 
     @objc func login() {
-        self.updateAnimated {
-            self.state.usernameValid = false
-            self.state.passwordValid = false
+        if (self.state.username == "Test" && self.state.password == "Test") {
+            self.updateAnimated {
+                self.state.usernameValid = true
+                self.state.passwordValid = true
+            }
+        } else {
+            self.updateAnimated {
+                self.state.usernameValid = false
+                self.state.passwordValid = false
+            }
         }
     }
 
@@ -63,23 +70,17 @@ class LoginComponentContainer: BaseComponentContainer<LoginState> {
     }
 
     override func render(state: LoginState) -> ContainerComponent {
-        let (width, height) = { () -> (Float, Float) in
-            switch state.loginRequestState {
-            case .Loading:
-                return (0.0, 0.0)
-            default:
-                return (200.0, 200.0)
-            }
-        }()
+        let validLabel: Component? = state.usernameValid ? nil : Label(text: "Invalid Username!")
 
         return CenterComponent(
-            width: width,
-            height: height,
+            width: 200,
+            height: 200,
             component:
                 StackComponent(
                     distribution: .FillEqually,
                     backgroundColor: Color(hexString: ""),
                     childComponents: [
+                        validLabel,
                         TextInput(
                             text: state.username,
                             placeholderText: "Username",

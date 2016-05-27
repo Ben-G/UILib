@@ -20,13 +20,13 @@ struct StackComponent: Component, ContainerComponent {
         alignment: Alignment = .Fill,
         distribution: Distribution = .Fill,
         backgroundColor: Color,
-        childComponents: [Component])
+        childComponents: [Component?])
     {
         self.axis = axis
         self.alignment = alignment
         self.distribution = distribution
         self.backgroundColor = backgroundColor
-        self.childComponents = childComponents
+        self.childComponents = childComponents.filter { $0 != nil }.map { $0! }
     }
 
     enum Axis {

@@ -43,7 +43,7 @@ class UserComponentContainer: BaseComponentContainer<UserViewState> {
                 onTapTarget: self,
                 onTapSelector: #selector(addButtonTapped)
             ),
-            title: "Second Title"
+            title: "User List"
         )
 
         let placeholder = VerticalMargin(margin: 20.0, color: Color(hexString: "lightGray"))
@@ -51,7 +51,7 @@ class UserComponentContainer: BaseComponentContainer<UserViewState> {
         let cellTypes = [CellTypeDefinition(
             nibFilename: "UserCell",
             cellIdentifier: "UserCell"
-            )]
+        )]
 
         let tableViewModel = TableViewModel(
             sections: [
