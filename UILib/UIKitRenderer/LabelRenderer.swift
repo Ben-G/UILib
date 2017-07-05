@@ -14,11 +14,11 @@ extension Label: UIKitRenderable {
         let label = UILabel()
         label.text = self.text
 
-        return .Leaf(self, label)
+        return .leaf(self, label)
     }
 
     func updateUIKit(
-        view: UIView,
+        _ view: UIView,
         change: Changes,
         newComponent: UIKitRenderable,
         renderTree: UIKitRenderTree) -> UIKitRenderTree
@@ -28,7 +28,7 @@ extension Label: UIKitRenderable {
 
         view.text = newComponent.text
 
-        return .Leaf(newComponent, view)
+        return .leaf(newComponent, view)
     }
 
 }

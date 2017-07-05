@@ -9,7 +9,7 @@
 import UIKit
 
 enum Changeset {
-    case Delete(NSIndexPath)
+    case delete(IndexPath)
 }
 
 struct CellTypeDefinition {
@@ -26,7 +26,7 @@ public final class TableViewRenderer: UIView {
         }
     }
 
-    private var _tableViewModel: TableViewModel!
+    fileprivate var _tableViewModel: TableViewModel!
 
     let cellTypes: [CellTypeDefinition]
 
@@ -39,11 +39,11 @@ public final class TableViewRenderer: UIView {
 
         super.init(frame: CGRect.zero)
 
-        self.tableView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        self.tableView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 
         for cellType in cellTypes {
             let nibFile = UINib(nibName: cellType.cellIdentifier, bundle: nil)
-            self.tableView.registerNib(nibFile, forCellReuseIdentifier: cellType.cellIdentifier)
+            self.tableView.register(nibFile, forCellReuseIdentifier: cellType.cellIdentifier)
         }
 
         self.addSubview(self.tableView)
@@ -56,12 +56,12 @@ public final class TableViewRenderer: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func newViewModelWithChangeset(newViewModel: TableViewModel, changeSet: Changeset) {
+    func newViewModelWithChangeset(_ newViewModel: TableViewModel, changeSet: Changeset) {
         self._tableViewModel = newViewModel
 
         switch changeSet {
-        case let .Delete(indexPath):
-            self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+        case let .delete(indexPath):
+            self.tableView.deleteRows(at: [indexPath], with: .automatic)
         }
     }
 
@@ -69,43 +69,43 @@ public final class TableViewRenderer: UIView {
 
 extension TableViewRenderer: UITableViewDataSource, UITableViewDelegate {
 
-    public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    public func numberOfSections(in tableView: UITableView) -> Int {
         return self._tableViewModel.sections.count
     }
 
-    public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellViewModel = self._tableViewModel[indexPath]
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellViewModel.cellIdentifier) ?? UITableViewCell()
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellViewModel.cellIdentifier) ?? UITableViewCell()
         cellViewModel.applyViewModelToCell(cell)
 
         return cell
     }
 
-    public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self._tableViewModel.sections[section].cells.count
     }
 
-    public func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    public func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return self._tableViewModel.sections[section].sectionHeaderTitle
     }
 
-    public func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+    public func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         return self._tableViewModel.sections[section].sectionFooterTitle
     }
 
-    public func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return self._tableViewModel[indexPath].canEdit
     }
 
-    public func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         self._tableViewModel[indexPath].commitEditingClosure(indexPath)
     }
 
-    public func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    public func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         return true
     }
 
-    public func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
+    public func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
 
     }
 

@@ -21,14 +21,14 @@ extension TextInput: UIKitRenderable {
         textField.addTarget(
             self.onChangedTarget,
             action: self.onChangedSelector,
-            forControlEvents: .EditingChanged
+            for: .editingChanged
         )
 
-        return .Leaf(self, textField)
+        return .leaf(self, textField)
     }
 
     func updateUIKit(
-        view: UIView,
+        _ view: UIView,
         change: Changes,
         newComponent: UIKitRenderable,
         renderTree: UIKitRenderTree) -> UIKitRenderTree
@@ -42,7 +42,7 @@ extension TextInput: UIKitRenderable {
             rgba: self.backgroundColor.hexString
         )
         
-        return .Leaf(newComponent, textField)
+        return .leaf(newComponent, textField)
     }
 
 }

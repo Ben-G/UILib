@@ -24,7 +24,7 @@ final class RenderView: Renderer {
         container.renderer = self
     }
 
-    func renderComponent(component: ContainerComponent, animated: Bool) {
+    func renderComponent(_ component: ContainerComponent, animated: Bool) {
         defer {
             // When leaving this function, store the new component
             // as the `lastRootComponent`.
@@ -32,7 +32,7 @@ final class RenderView: Renderer {
         }
 
         // If we have an existing root component, calculate diffs instead of rendering from scratch
-        if let lastRootComponent = self.lastRootComponent, lastRenderTree = lastRenderTree {
+        if let lastRootComponent = self.lastRootComponent, let lastRenderTree = lastRenderTree {
             // Calculate the difference between old and new component tree
             let reconcilerResults = diffChanges(lastRootComponent, newTree: component)
 
@@ -47,9 +47,9 @@ final class RenderView: Renderer {
 
             // Decide wheter or not to perform the updates animated
             if animated {
-                UIView.animateWithDuration(0.3) {
+                UIView.animate(withDuration: 0.3, animations: {
                     self.lastRenderTree = updates()
-                }
+                }) 
             } else {
                 self.lastRenderTree = updates()
             }
@@ -63,7 +63,7 @@ final class RenderView: Renderer {
                 self.lastRenderTree = renderTree
 
                 renderTree.view.frame = self.view.frame
-                renderTree.view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+                renderTree.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
                 self.view.addSubview(renderTree.view)
             }
         }
@@ -77,12 +77,12 @@ protocol UIKitRenderable {
 
     // Note: Right now it is not possible to return a new view instance from this method. This
     // new instance would not be inserted into the view hierarchy!
-    func updateUIKit(view: UIView, change: Changes, newComponent: UIKitRenderable, renderTree: UIKitRenderTree) -> UIKitRenderTree
+    func updateUIKit(_ view: UIView, change: Changes, newComponent: UIKitRenderable, renderTree: UIKitRenderTree) -> UIKitRenderTree
 }
 
 extension UIKitRenderable {
-    func updateUIKit(view: UIView, change: Changes, newComponent: UIKitRenderable, renderTree: UIKitRenderTree) -> UIKitRenderTree {
+    func updateUIKit(_ view: UIView, change: Changes, newComponent: UIKitRenderable, renderTree: UIKitRenderTree) -> UIKitRenderTree {
 
-        return .Leaf(self, view)
+        return .leaf(self, view)
     }
 }

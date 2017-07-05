@@ -21,7 +21,7 @@ public protocol Component {
 }
 
 extension Component {
-    var componentIdentifier: String { return String(self.dynamicType) }
+    var componentIdentifier: String { return String(describing: type(of: self)) }
 }
 
 public func == (lhs: Component, rhs: Component) -> Bool {

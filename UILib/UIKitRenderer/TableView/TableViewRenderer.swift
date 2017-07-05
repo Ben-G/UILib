@@ -17,31 +17,31 @@ extension TableViewModel: UIKitRenderable {
 
         tableViewRenderer.tableViewModel = self
 
-        return .Leaf(self, tableViewRenderer)
+        return .leaf(self, tableViewRenderer)
     }
 
-    func updateUIKit(view: UIView, change: Changes, newComponent: UIKitRenderable, renderTree: UIKitRenderTree) -> UIKitRenderTree {
+    func updateUIKit(_ view: UIView, change: Changes, newComponent: UIKitRenderable, renderTree: UIKitRenderTree) -> UIKitRenderTree {
         guard let view = view as? TableViewRenderer else { fatalError() }
         guard let newComponent = newComponent as? TableViewModel else { fatalError() }
 
         // Update view model
         view.tableViewModel = newComponent
 
-        if case let .Root(changes) = change {
+        if case let .root(changes) = change {
             // need to check which sections / rows are affected
-            for (sectionIndex, change) in changes.enumerate() {
-                if case let .Root(changes) = change {
-                    for (_, change) in changes.enumerate() {
+            for (sectionIndex, change) in changes.enumerated() {
+                if case let .root(changes) = change {
+                    for (_, change) in changes.enumerated() {
                         switch change {
-                        case let .Remove(row):
-                            view.tableView.deleteRowsAtIndexPaths(
-                                [NSIndexPath(forRow: row, inSection: sectionIndex)],
-                                withRowAnimation: .Automatic
+                        case let .remove(row):
+                            view.tableView.deleteRows(
+                                at: [IndexPath(row: row, section: sectionIndex)],
+                                with: .automatic
                             )
-                        case let .Insert(row, _):
-                            view.tableView.insertRowsAtIndexPaths(
-                                [NSIndexPath(forRow: row, inSection: sectionIndex)],
-                                withRowAnimation: .Automatic
+                        case let .insert(row, _):
+                            view.tableView.insertRows(
+                                at: [IndexPath(row: row, section: sectionIndex)],
+                                with: .automatic
                             )
                         default:
                             break
@@ -51,7 +51,7 @@ extension TableViewModel: UIKitRenderable {
             }
         }
 
-        return .Leaf(newComponent, view)
+        return .leaf(newComponent, view)
     }
 
 }

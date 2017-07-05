@@ -10,15 +10,15 @@ import Foundation
 import UIKit
 
 enum LoginRequestState {
-    case None
-    case Loading
-    case Success
+    case none
+    case loading
+    case success
 }
 
 struct LoginState {
     var username: String = ""
     var password: String = ""
-    var loginRequestState: LoginRequestState = .None
+    var loginRequestState: LoginRequestState = .none
     var usernameValid: Bool = true
     var passwordValid: Bool = true
 
@@ -51,25 +51,25 @@ class LoginComponentContainer: BaseComponentContainer<LoginState> {
 
     @objc func signup() {
         self.updateAnimated {
-            self.state.loginRequestState = .Loading
+            self.state.loginRequestState = .loading
         }
 
-        self.router?.switchRoute(.List)
+        self.router?.switchRoute(.list)
     }
 
-    @objc func usernameChanged(newValue: UITextField) {
+    @objc func usernameChanged(_ newValue: UITextField) {
         self.updateNoRender {
             self.state.username = newValue.text ?? ""
         }
     }
 
-    @objc func passwordChanged(newValue: UITextField) {
+    @objc func passwordChanged(_ newValue: UITextField) {
         self.updateNoRender {
             self.state.password = newValue.text ?? ""
         }
     }
 
-    override func render(state: LoginState) -> ContainerComponent {
+    override func render(_ state: LoginState) -> ContainerComponent {
         let validLabel: Component? = state.usernameValid ? nil : Label(text: "Invalid Username!")
 
         return CenterComponent(
@@ -77,7 +77,7 @@ class LoginComponentContainer: BaseComponentContainer<LoginState> {
             height: 200,
             component:
                 StackComponent(
-                    distribution: .FillEqually,
+                    distribution: .fillEqually,
                     backgroundColor: Color(hexString: ""),
                     childComponents: [
                         validLabel,
@@ -98,8 +98,8 @@ class LoginComponentContainer: BaseComponentContainer<LoginState> {
                             onChangedSelector: #selector(passwordChanged)
                         ),
                         StackComponent(
-                            distribution: .FillEqually,
-                            axis: .Horizontal,
+                            axis: .horizontal,
+                            distribution: .fillEqually,
                             backgroundColor: Color(hexString: ""),
                             childComponents: [
                                 Button(

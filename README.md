@@ -1,11 +1,11 @@
-#UILib
+# UILib
 
 UILib brings the concepts of Facebook's React to Swift and UIKit. It allows you to build UIs in declarative way utilizing
 a one-way data flow.
 
 ⚠️ It is currently a work in progress proof of concept with very limited functionality. ⚠️
 
-#About
+# About
 
 Using UILib you create scenes in your app by creating a `ComponentContainer`. A component container stores the state for a specific scene
 and provides a `render` function to produce the view for that scene. Whenever the state in a `ComponentContainer` updates, the `render` function is invoked.
@@ -15,7 +15,7 @@ UILib will take that component tree and generate the necessary UI components to 
 new one and update the UIKit representation automatically. This allows developers to write views declaratively without worrying about how they need to be updated.
 
 
-#Example
+# Example
 
 Here's an example of a `ComponentContainer` for a login view:
 
@@ -134,13 +134,13 @@ class LoginComponentContainer: BaseComponentContainer<LoginState> {
 }
 ```
 
-#Goals Of This Library
+# Goals Of This Library
 
 - Develop a proof of concept to see if we can wrap UIKit into a declarative view layer that we can use in production apps
 - Make the library as uninvasive as possible: make it use system components; make it easy to use with existing UI components
 - Use native UI APIs on the rendering layer to get full functionality of complex UI components, such as table views and collection views
 
-#Technical Details
+# Technical Details
 
 In UILib each scene is represented by a `ComponentContainer<T>`. The component container stores the specific state for a scene. It's generic over the scenes type.
 Each component container has a `render` function. Whenever the state stored in a container changes, the `render` function is called. 
@@ -162,7 +162,7 @@ The calculated changes from the diffing algorithm  can either be an `Insert`, `D
 
 Currently all plain components (buttons, text fields, etc.) will be updated on each render pass; in a future improvement the library will check if a specific view component's state changed or not before updating it.
 
-##Component Tree, Render Tree and Changeset Tree
+## Component Tree, Render Tree and Changeset Tree
 
 *Note: The notes in this section are not polished and mostly ment for myself; so don't worry if you don't understand them!*
 
@@ -174,7 +174,7 @@ The render tree is separate from the component tree. The render tree stores comp
 
 `.Leafs` on the other hand mark the end of the render tree. None of their potentially existing child components have a representation in the render tree; therefore they cannot be updated automatically. When `.Leafs` receive `.Root` changes, they are responsible for updating themselves **and all of their child components**. A current example for a container component that acts as a leaf in the render tree is the Table View. The Table View needs to update its children manually, since UILib should not interfere with the way updates work within `UITableViews`. If each of the child components of the table view would also be represented in the render tree; the deletion of a `UITableViewCell` would be the responsibility of its parent component, a `UITableViewSection`. However, in UIKit it is not possible for a section to delete a cell; such kind of changes have to happen through the table view's data source and delegate and these are maintained by the table view component. By acting as a `.Leaf` the table view can opt out of the automatic container changes and can receive all changes for any of the components below it in the component tree.
 
-###Animated State Changes
+### Animated State Changes
 
 UILib supports a very naive way of rendering state changes. When mutating the state in a component container the update can be wrapped in a `updateAnimated` block:
 
@@ -186,7 +186,7 @@ self.updateAnimated {
 ```
 The resulting changes will then be rendered within a `UIView.animateWithDuration...` block.
 
-###State Changes Without Re-Render
+### State Changes Without Re-Render
 
 UILib provides another special way to perform updates that works around two-way binding issues. If we want to update the state in response to an update that we received from a UI component (e.g. user entered a new text), then we want to avoid a re-render when we update the state. This can be done as following:
 
@@ -198,6 +198,6 @@ UILib provides another special way to perform updates that works around two-way 
 }
 ```
 
-#Similar Projects
+# Similar Projects
 
 Check out [Few.swift](https://github.com/joshaber/Few.swift) by Josh Abernathy which has the same goal and is more mature (even though it's experimental as well). One of the major differences is that Few.swift uses CSS layout, just as React does.

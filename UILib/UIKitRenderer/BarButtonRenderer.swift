@@ -14,7 +14,7 @@ extension BarButton {
 
         let barButton = UIBarButtonItem(
             title: self.title,
-            style: .Plain,
+            style: .plain,
             target: self.onTapTarget,
             action: self.onTapSelector
         )

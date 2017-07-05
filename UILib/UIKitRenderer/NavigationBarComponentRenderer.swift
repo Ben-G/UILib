@@ -23,17 +23,17 @@ extension NavigationBarComponent: UIKitRenderable {
             navigationItem.rightBarButtonItem = rightBarButton.renderUIKit()
         }
 
-        navigationBar.pushNavigationItem(navigationItem, animated: false)
+        navigationBar.pushItem(navigationItem, animated: false)
 
-        return .Leaf(self, navigationBar)
+        return .leaf(self, navigationBar)
     }
 
-    func updateUIKit(view: UIView, change: Changes, newComponent: UIKitRenderable, renderTree: UIKitRenderTree) -> UIKitRenderTree {
+    func updateUIKit(_ view: UIView, change: Changes, newComponent: UIKitRenderable, renderTree: UIKitRenderTree) -> UIKitRenderTree {
 
         guard let navigationBar = view as? UINavigationBar else { fatalError() }
         guard let newComponent = newComponent as? NavigationBarComponent else { fatalError() }
 
-        navigationBar.popNavigationItemAnimated(false)
+        navigationBar.popItem(animated: false)
 
         let navigationItem = UINavigationItem()
         navigationItem.title = newComponent.title
@@ -46,8 +46,8 @@ extension NavigationBarComponent: UIKitRenderable {
             navigationItem.rightBarButtonItem = rightBarButton.renderUIKit()
         }
 
-        navigationBar.pushNavigationItem(navigationItem, animated: false)
+        navigationBar.pushItem(navigationItem, animated: false)
         
-        return .Leaf(newComponent, navigationBar)
+        return .leaf(newComponent, navigationBar)
     }
 }

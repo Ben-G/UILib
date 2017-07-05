@@ -15,7 +15,7 @@ class UserCell: UITableViewCell {
 }
 
 
-func applyViewModelUserCell(user: String) -> (cell: UITableViewCell) -> Void {
+func applyViewModelUserCell(_ user: String) -> (_ cell: UITableViewCell) -> Void {
     return { cell in
         guard let cell = cell as? UserCell else { return }
         cell.nameLabel.text = user

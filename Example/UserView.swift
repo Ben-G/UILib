@@ -10,7 +10,7 @@ import Foundation
 
 struct User {
     var name: String
-    var uid: String = NSUUID().UUIDString
+    var uid: String = UUID().uuidString
 
     init(_ name: String) {
         self.name = name
@@ -27,15 +27,15 @@ class UserComponentContainer: BaseComponentContainer<UserViewState> {
         super.init(state: state)
     }
 
-    @objc func addButtonTapped(button: AnyObject) {
+    @objc func addButtonTapped(_ button: AnyObject) {
         self.state.users.append(User("Another User!"))
     }
 
-    func deleteRow(indexPath: NSIndexPath) {
-        self.state.users.removeAtIndex(indexPath.row)
+    func deleteRow(_ indexPath: IndexPath) {
+        self.state.users.remove(at: indexPath.row)
     }
 
-    override func render(state: UserViewState) -> ContainerComponent {
+    override func render(_ state: UserViewState) -> ContainerComponent {
         let navigationBar = NavigationBarComponent(
             leftBarButton: nil,
             rightBarButton: BarButton(
@@ -76,7 +76,7 @@ class UserComponentContainer: BaseComponentContainer<UserViewState> {
         return stackView
     }
 
-    func cellModelForUser(user: User, onDelete: (NSIndexPath) -> Void) -> TableViewCellModel {
+    func cellModelForUser(_ user: User, onDelete: @escaping (IndexPath) -> Void) -> TableViewCellModel {
             return TableViewCellModel(
                 cellIdentifier: "UserCell",
                 componentIdentifier: user.uid,

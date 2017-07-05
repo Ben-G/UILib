@@ -8,7 +8,7 @@
 
 import UIKit
 
-typealias CommitEditingClosure = (NSIndexPath) -> Void
+typealias CommitEditingClosure = (IndexPath) -> Void
 
 struct TableViewCellModel: Component {
     let cellIdentifier: String
@@ -19,8 +19,8 @@ struct TableViewCellModel: Component {
     init(
         cellIdentifier: String,
         componentIdentifier: String,
-        applyViewModelToCell: (UITableViewCell) -> Void,
-        commitEditingClosure: CommitEditingClosure
+        applyViewModelToCell: @escaping (UITableViewCell) -> Void,
+        commitEditingClosure: @escaping CommitEditingClosure
     ) {
         self.cellIdentifier = cellIdentifier
         self.applyViewModelToCell = applyViewModelToCell

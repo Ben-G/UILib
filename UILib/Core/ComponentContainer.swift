@@ -9,7 +9,7 @@
 import Foundation
 
 protocol Renderer: class {
-    func renderComponent(component: ContainerComponent, animated: Bool)
+    func renderComponent(_ component: ContainerComponent, animated: Bool)
 }
 
 protocol ComponentContainer {
@@ -43,19 +43,19 @@ class BaseComponentContainer<State>: ComponentContainer {
     var _noRender = false
     var _animateChanges = false
 
-    func updateNoRender(update: () -> Void) {
+    func updateNoRender(_ update: () -> Void) {
         self._noRender = true
         update()
         self._noRender = false
     }
 
-    func updateAnimated(update: () -> Void) {
+    func updateAnimated(_ update: () -> Void) {
         self._animateChanges = true
         update()
         self._animateChanges = false
     }
 
-    func render(state: State) -> ContainerComponent {
+    func render(_ state: State) -> ContainerComponent {
         fatalError()
     }
     

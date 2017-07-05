@@ -14,15 +14,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var router: Router!
 
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
-        router = Router(initialRoute: .LoginSignup)
+        router = Router(initialRoute: .loginSignup)
 
-        self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
+        self.window = UIWindow(frame: UIScreen.main.bounds)
         self.window?.rootViewController = router.rootViewController
         self.window?.makeKeyAndVisible()
 
-        router.rootViewController.view.frame = UIScreen.mainScreen().bounds
+        router.rootViewController.view.frame = UIScreen.main.bounds
 
         return true
     }
@@ -30,8 +30,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 enum Route {
-    case LoginSignup
-    case List
+    case loginSignup
+    case list
 }
 
 class Router {
@@ -61,9 +61,9 @@ class Router {
 
     func _applyCurrentRoute() {
         switch self.route {
-        case .LoginSignup:
+        case .loginSignup:
             self.renderView = RenderView(container: loginComponent)
-        case .List:
+        case .list:
             self.renderView = RenderView(container: userComponent)
         }
 
@@ -74,7 +74,7 @@ class Router {
         }
     }
 
-    func switchRoute(route: Route) {
+    func switchRoute(_ route: Route) {
         self.route = route
         self._applyCurrentRoute()
     }

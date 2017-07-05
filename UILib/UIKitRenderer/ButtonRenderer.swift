@@ -12,12 +12,12 @@ extension Button: UIKitRenderable {
 
     func renderUIKit() -> UIKitRenderTree {
 
-        let button = UIButton(type: .Custom)
-        button.setTitle(self.title, forState: .Normal)
-        button.addTarget(self.target, action: self.selector, forControlEvents: .TouchUpInside)
-        button.setTitleColor(.blueColor(), forState: .Normal)
+        let button = UIButton(type: .custom)
+        button.setTitle(self.title, for: UIControlState())
+        button.addTarget(self.target, action: self.selector, for: .touchUpInside)
+        button.setTitleColor(.blue, for: UIControlState())
 
-        return .Leaf(self, button)
+        return .leaf(self, button)
     }
     
 }

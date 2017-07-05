@@ -22,15 +22,15 @@ extension StackComponent: UIKitRenderable {
 
         let stackView = UIStackView(arrangedSubviews: childViews)
         stackView.axis = convertAxis(self.axis)
-        stackView.backgroundColor = .whiteColor()
+        stackView.backgroundColor = .white
         stackView.alignment = convertAlignment(self.alignment)
         stackView.distribution = convertDistribution(self.distribution)
 
-        return .Node(self, stackView, children)
+        return .node(self, stackView, children)
     }
 
     func updateUIKit(
-        view: UIView,
+        _ view: UIView,
         change: Changes,
         newComponent: UIKitRenderable,
         renderTree: UIKitRenderTree
@@ -40,7 +40,7 @@ extension StackComponent: UIKitRenderable {
 
         guard let stackView = view as? UIStackView else { fatalError() }
         stackView.axis = convertAxis(newComponent.axis)
-        stackView.backgroundColor = .whiteColor()
+        stackView.backgroundColor = .white
 
         let newAlignment = convertAlignment(newComponent.alignment)
 
@@ -50,22 +50,22 @@ extension StackComponent: UIKitRenderable {
 
         stackView.distribution = convertDistribution(newComponent.distribution)
 
-        guard case let .Node(_, _, childTree) = renderTree else { fatalError() }
+        guard case let .node(_, _, childTree) = renderTree else { fatalError() }
 
         var children = childTree
 
         var viewsToInsert: [(index: Int, view: UIView, renderTree: UIKitRenderTree)] = []
         var viewsToRemove: [(index: Int, view: UIView)] = []
 
-        if case let .Root(changes) = change {
+        if case let .root(changes) = change {
 
             for change in changes {
 
                 switch change {
-                case let .Insert(index, _):
+                case let .insert(index, _):
                     let renderTreeEntry = (newComponent.childComponents[index] as! UIKitRenderable).renderUIKit()
                     viewsToInsert.append((index, renderTreeEntry.view, renderTreeEntry))
-                case let .Remove(index):
+                case let .remove(index):
                     let childView = children[index].view
                     viewsToRemove.append((index, childView))
                 default:
@@ -78,8 +78,8 @@ extension StackComponent: UIKitRenderable {
         var indexOffset = 0
 
         for insert in viewsToInsert {
-            stackView.insertArrangedSubview(insert.view, atIndex: insert.index)
-            children.insert(insert.renderTree, atIndex: insert.index)
+            stackView.insertArrangedSubview(insert.view, at: insert.index)
+            children.insert(insert.renderTree, at: insert.index)
 
             indexOffset += 1
         }
@@ -87,50 +87,50 @@ extension StackComponent: UIKitRenderable {
         for remove in viewsToRemove {
             stackView.removeArrangedSubview(remove.view)
             remove.view.removeFromSuperview()
-            children.removeAtIndex(remove.index + indexOffset)
+            children.remove(at: remove.index + indexOffset)
 
             indexOffset -= 1
         }
 
-        return .Node(newComponent, stackView, children)
+        return .node(newComponent, stackView, children)
     }
     
 }
 
 
-private func convertAlignment(alignment: StackComponent.Alignment) -> UIStackViewAlignment {
+private func convertAlignment(_ alignment: StackComponent.Alignment) -> UIStackViewAlignment {
     switch alignment {
-    case .Center:
-        return UIStackViewAlignment.Center
-    case .Fill:
-        return UIStackViewAlignment.Fill
-    case .Leading:
-        return UIStackViewAlignment.Leading
-    case .Trailing:
-        return UIStackViewAlignment.Trailing
+    case .center:
+        return UIStackViewAlignment.center
+    case .fill:
+        return UIStackViewAlignment.fill
+    case .leading:
+        return UIStackViewAlignment.leading
+    case .trailing:
+        return UIStackViewAlignment.trailing
     }
 }
 
-private func convertDistribution(distribution: StackComponent.Distribution) -> UIStackViewDistribution {
+private func convertDistribution(_ distribution: StackComponent.Distribution) -> UIStackViewDistribution {
     switch distribution {
-    case .Fill:
-        return UIStackViewDistribution.Fill
-    case .FillEqually:
-        return UIStackViewDistribution.FillEqually
-    case .FillProportionally:
-        return UIStackViewDistribution.FillProportionally
-    case .EqualSpacing:
-        return UIStackViewDistribution.EqualSpacing
-    case .EqualCentering:
-        return UIStackViewDistribution.EqualCentering
+    case .fill:
+        return UIStackViewDistribution.fill
+    case .fillEqually:
+        return UIStackViewDistribution.fillEqually
+    case .fillProportionally:
+        return UIStackViewDistribution.fillProportionally
+    case .equalSpacing:
+        return UIStackViewDistribution.equalSpacing
+    case .equalCentering:
+        return UIStackViewDistribution.equalCentering
     }
 }
 
-private func convertAxis(axis: StackComponent.Axis) -> UILayoutConstraintAxis {
+private func convertAxis(_ axis: StackComponent.Axis) -> UILayoutConstraintAxis {
     switch axis {
-    case .Horizontal:
-        return UILayoutConstraintAxis.Horizontal
-    case .Vertical:
-        return UILayoutConstraintAxis.Vertical
+    case .horizontal:
+        return UILayoutConstraintAxis.horizontal
+    case .vertical:
+        return UILayoutConstraintAxis.vertical
     }
 }

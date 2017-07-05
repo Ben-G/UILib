@@ -13,7 +13,7 @@ extension CenterComponent: UIKitRenderable {
     func renderUIKit() -> UIKitRenderTree {
         let view = UIView()
 
-        view.frame = CGRectMake(0, 0, CGFloat(self.width), CGFloat(self.height))
+        view.frame = CGRect(x: 0, y: 0, width: CGFloat(self.width), height: CGFloat(self.height))
         let renderTree = (self.component as! UIKitRenderable).renderUIKit()
         let subview = renderTree.view
         view.addSubview(subview)
@@ -21,32 +21,32 @@ extension CenterComponent: UIKitRenderable {
         subview.bounds = view.bounds
         subview.center = view.center
         subview.autoresizingMask = [
-            .FlexibleTopMargin,
-            .FlexibleLeftMargin,
-            .FlexibleRightMargin,
-            .FlexibleBottomMargin
+            .flexibleTopMargin,
+            .flexibleLeftMargin,
+            .flexibleRightMargin,
+            .flexibleBottomMargin
         ]
 
         subview.setNeedsLayout()
 
-        view.backgroundColor = .grayColor()
+        view.backgroundColor = .gray
 
-        return .Node(self, view, [renderTree])
+        return .node(self, view, [renderTree])
     }
 
     func updateUIKit(
-        view: UIView,
+        _ view: UIView,
         change: Changes,
         newComponent: UIKitRenderable,
         renderTree: UIKitRenderTree) -> UIKitRenderTree
     {
-        guard case let .Node(_, _, childTree) = renderTree else { fatalError() }
+        guard case let .node(_, _, childTree) = renderTree else { fatalError() }
         guard let newComponent = newComponent as? CenterComponent else { fatalError() }
 
-        childTree[0].view.bounds = CGRectMake(0, 0, CGFloat(newComponent.width), CGFloat(newComponent.height))
+        childTree[0].view.bounds = CGRect(x: 0, y: 0, width: CGFloat(newComponent.width), height: CGFloat(newComponent.height))
         childTree[0].view.center = view.center
 
-        return .Node(self, view, childTree)
+        return .node(self, view, childTree)
     }
 
 }

@@ -23,7 +23,7 @@ struct TableViewModel: Component, ContainerComponent {
         self.cellTypeDefinitions = cellTypeDefinitions
     }
 
-    subscript(indexPath: NSIndexPath) -> TableViewCellModel {
+    subscript(indexPath: IndexPath) -> TableViewCellModel {
         return self.sections[indexPath.section].cells[indexPath.row]
     }
 }

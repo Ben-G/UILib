@@ -16,7 +16,7 @@ class FullScreenViewController: UIViewController {
 
             self.view.addSubview(self.contentView)
             self.contentView.frame = self.view.bounds
-            self.contentView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+            self.contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         }
     }
 
@@ -31,10 +31,10 @@ class FullScreenViewController: UIViewController {
     }
 
     override func viewDidLoad() {
-        self.view.backgroundColor = .whiteColor()
+        self.view.backgroundColor = .white
         self.view.addSubview(self.contentView)
 
         self.contentView.frame = self.view.bounds
-        self.contentView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        self.contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     }
 }

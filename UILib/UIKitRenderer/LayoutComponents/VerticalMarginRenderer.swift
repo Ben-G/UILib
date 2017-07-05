@@ -14,10 +14,10 @@ extension VerticalMargin: UIKitRenderable {
     func renderUIKit() -> UIKitRenderTree {
         let view = _VerticalMarginView()
 
-        view.backgroundColor = .redColor()
+        view.backgroundColor = .red
         view._margin = CGFloat(self.margin)
 
-        return .Leaf(self, view)
+        return .leaf(self, view)
     }
 
 }
@@ -26,24 +26,24 @@ class _VerticalMarginView: UIView {
 
     var _margin: CGFloat = 0.0
     var _size: CGSize {
-        return CGSizeMake(0, self._margin)
+        return CGSize(width: 0, height: self._margin)
     }
 
-    var _color: UIColor = .clearColor() {
+    var _color: UIColor = .clear {
         didSet {
             self.backgroundColor = _color
         }
     }
 
     init() {
-        super.init(frame: CGRectZero)
+        super.init(frame: CGRect.zero)
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func intrinsicContentSize() -> CGSize {
+    override var intrinsicContentSize : CGSize {
         return _size
     }
     

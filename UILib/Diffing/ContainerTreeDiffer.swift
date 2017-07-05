@@ -11,17 +11,17 @@ import Foundation
 /**
  Derives a set of changes based on a old and new `ContainerComponent`.
 */
-func diffChanges(oldTree: ContainerComponent, newTree: ContainerComponent) -> Changes {
+func diffChanges(_ oldTree: ContainerComponent, newTree: ContainerComponent) -> Changes {
     var changes: [Changes] = []
 
     for component in oldTree.childComponents {
         if component is ContainerComponent {
             // start out with the assumption that we need to update none of the container
             // components
-            changes.append(.None)
+            changes.append(.none)
         } else {
             // start out with the assumption that we need to update every regular component
-            changes.append(.Update)
+            changes.append(.update)
         }
     }
 
@@ -35,25 +35,25 @@ func diffChanges(oldTree: ContainerComponent, newTree: ContainerComponent) -> Ch
     // Iterate over all changes we found while diffing
     diff.results.forEach { diffStep in
         switch diffStep {
-        case let .Insert(index, identifier):
+        case let .insert(index, identifier):
             // If we detect insertions, simply append these two our change list
-            changes.append(.Insert(index: index, identifier: identifier))
+            changes.append(.insert(index: index, identifier: identifier))
             insertedIndexes.append(index)
-        case let .Delete(index, _):
+        case let .delete(index, _):
             // If we detect deletes, place them at the child component index that is about
             // to be deleted. This will override the default value we inserted earlier for 
             // this component.
-            changes[index] = .Remove(index: index)
+            changes[index] = .remove(index: index)
             removedIndexes.append(index)
         }
     }
 
     // Iterate over all components allready in the tree and recursively check for updates
-    for (index, component) in oldTree.childComponents.enumerate() {
+    for (index, component) in oldTree.childComponents.enumerated() {
         // Revisit all old components that currently have a `.None` set of changes
         // Deleted or inserted types don't need to be checked for child component changes since they
         // are either being removed from the tree or are entirely new.
-        guard case .None = changes[index] else { continue }
+        guard case .none = changes[index] else { continue }
 
         // Calculate mapping between index in new and old tree by counting insertions and
         // deletions that affect the current index
@@ -78,5 +78,5 @@ func diffChanges(oldTree: ContainerComponent, newTree: ContainerComponent) -> Ch
     }
 
     // Combine all of the changes on this level into a `Root` change for the container component
-    return .Root(changes)
+    return .root(changes)
 }
